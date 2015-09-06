@@ -1,0 +1,14 @@
+{
+    "curly": true,
+    "esnext": true,
+    "latedef": true,
+    "maxcomplexity": 3,
+    "maxdepth": 3,
+    "undef": true,
+    "unused": true,
+    "globals": {
+        "_": false,
+        "chrome": false,
+        "console": false
+    }
+}
