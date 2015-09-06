@@ -1,14 +1,15 @@
 {
     "curly": true,
     "esnext": true,
-    "latedef": true,
     "maxcomplexity": 3,
     "maxdepth": 3,
     "undef": true,
     "unused": true,
+    "browser": true,
     "globals": {
         "_": false,
         "chrome": false,
-        "console": false
+        "console": false,
+        "Path2D": true
     }
 }
