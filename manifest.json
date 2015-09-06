@@ -7,10 +7,6 @@
         "page": "background.html"
     },
     "page_action": {
-        "default_icon": {
-            "19": "images/icon19.png",
-            "38": "images/icon38.png"
-        },
         "default_title": "This page is open in multiple tabs",
         "default_popup": "popup.html"
     },
