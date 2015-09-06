@@ -1,4 +1,6 @@
-function onUpdated(tabId, change, changedTab) {
+var tabGroups = {};
+
+chrome.tabs.onUpdated.addListener((tabId, change, changedTab) => {
     if(!change.url) {
         // url not changed in tab update
         return;
@@ -30,24 +32,38 @@ function onUpdated(tabId, change, changedTab) {
             'exact matches:', _.map(exacts, 'id'), exacts, '\n'
         );
 
-        var imageData = drawIcon(tabs.length);
-        _.each(tabs, (tab) => {
-            chrome.pageAction.show(tab.id);
-            chrome.pageAction.setIcon({tabId: tab.id, imageData: imageData});
-            chrome.pageAction.setTitle({
-                tabId: tab.id,
-                title: 'This page is open in ' + tabs.length + ' tabs.'
+        updateTabGroup(_.map(tabs, 'id'));
+    });
+});
+
+chrome.tabs.onRemoved.addListener((tabId) => {
+    if(tabGroups[tabId]) {
+        if(tabGroups[tabId].length === 2) {
+            _.each(tabGroups[tabId], (id) => {
+                if(id !== tabId) {
+                    chrome.pageAction.hide(id);
+                }
+                delete tabGroups[id];
             });
+        } else {
+            updateTabGroup(_.reject(tabGroups[tabId], (id) => id === tabId));
+            delete tabGroups[tabId];
+        }
+    }
+});
+
+function updateTabGroup(tabIds) {
+    var imageData = drawIcon(tabIds.length);
+    _.each(tabIds, (id) => {
+        tabGroups[id] = tabIds;
+        chrome.pageAction.show(id);
+        chrome.pageAction.setIcon({tabId: id, imageData: imageData});
+        chrome.pageAction.setTitle({
+            tabId: id,
+            title: 'This page is open in ' + tabIds.length + ' tabs.'
         });
     });
 }
-
-chrome.tabs.onUpdated.addListener(onUpdated);
-
-chrome.tabs.onRemoved.addListener((tabId) => {
-    // TODO remove affected pageActions
-    console.log('removed', tabId);
-});
 
 function drawIcon(count) {
     var canvas = document.getElementById('canvas');
