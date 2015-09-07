@@ -1,44 +1,48 @@
-if(!chrome.storage.local.tabBaseUrl) {
-    chrome.storage.local.tabBaseUrl = {};
-}
-var tabBaseUrl = chrome.storage.local.tabBaseUrl;
-
 chrome.runtime.onInstalled.addListener(() => {
     chrome.tabs.query({}, (tabs) => {
-        _(tabs)
-            .map( (tab) => {
-                var baseUrl = getBaseUrl(tab.url);
-                tabBaseUrl[tab.id] = baseUrl;
-                return baseUrl;
-            })
-            .unique()
-            .each((baseUrl) => {
-                updateTabGroup(baseUrl);
-            })
-            .value();
+        loadBaseUrls((tabBaseUrl) => {
+            _(tabs)
+                .map( (tab) => {
+                    var baseUrl = getBaseUrl(tab.url);
+                    tabBaseUrl[tab.id] = baseUrl;
+                    return baseUrl;
+                })
+                .unique()
+                .each((baseUrl) => {
+                    updateTabGroup(baseUrl);
+                })
+                .value();
+            saveBaseUrls(tabBaseUrl);
+        });
     });
 });
 
 chrome.tabs.onUpdated.addListener((tabId, change) => {
-    if(!change.url) {
-        // url not changed in tab update
-        return;
-    }
-    var baseUrl = getBaseUrl(change.url);
+    loadBaseUrls((tabBaseUrl) => {
+        if(!change.url) {
+            // url not changed in tab update
+            return;
+        }
+        var baseUrl = getBaseUrl(change.url);
 
-    if(tabBaseUrl[tabId] && tabBaseUrl[tabId] !== baseUrl) {
-        chrome.pageAction.hide(tabId);
-        updateTabGroup(tabBaseUrl[tabId]);
-    }
-    tabBaseUrl[tabId] = baseUrl;
-    updateTabGroup(baseUrl);
+        if(tabBaseUrl[tabId] && tabBaseUrl[tabId] !== baseUrl) {
+            chrome.pageAction.hide(tabId);
+            updateTabGroup(tabBaseUrl[tabId]);
+        }
+        tabBaseUrl[tabId] = baseUrl;
+        saveBaseUrls(tabBaseUrl);
+        updateTabGroup(baseUrl);
+    });
 });
 
 chrome.tabs.onRemoved.addListener((tabId) => {
-    if(tabBaseUrl[tabId]) {
-        updateTabGroup(tabBaseUrl[tabId]);
-        delete tabBaseUrl[tabId];
-    }
+    loadBaseUrls((tabBaseUrl) => {
+        if(tabBaseUrl[tabId]) {
+            updateTabGroup(tabBaseUrl[tabId]);
+            delete tabBaseUrl[tabId];
+            saveBaseUrls(tabBaseUrl);
+        }
+    });
 });
 
 function updateTabGroup(baseUrl) {
@@ -92,4 +96,17 @@ function drawIcon(count) {
 
 function getBaseUrl(url) {
     return url.split('?')[0].split('#')[0];
+}
+
+function loadBaseUrls(callback) {
+    chrome.storage.local.get('tabBaseUrl', (storage) => {
+        if(!storage.tabBaseUrl) {
+            storage.tabBaseUrl = {};
+        }
+        callback(storage.tabBaseUrl);
+    });
+}
+
+function saveBaseUrls(tabBaseUrl) {
+    chrome.storage.local.set({tabBaseUrl: tabBaseUrl});
 }
