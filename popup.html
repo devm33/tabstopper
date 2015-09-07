@@ -1,7 +1,43 @@
 <!DOCTYPE html>
 <html>
     <head></head>
-    <body>
-        <h2>TODO add content</h2>
+    <body ng-app="popup" ng-controller="popup">
+
+        <h3>This page is open in {{tabs.length}} tabs</h3>
+
+        <div ng-if="exacts.length">
+            <h4>There are {{exacts.length}} tabs exactly matching:</h4>
+            <ul>
+                <li ng-repeat="tab in exacts track by tab.id">
+                    <a href ng-click="focusTab(tab)">{{tab.title}}</a>
+                </li>
+            </ul>
+        </div>
+
+        <div ng-if="matchExceptHash.length">
+            <h4>There are {{matchesExceptHash.length}} tabs matching the
+                current url except for their #hash values:</h4>
+            <ul>
+                <li ng-repeat="tab in matchExceptHash track by tab.id">
+                    <a href ng-click="focusTab(tab)">
+                        {{tab.url.split('#')[1]}}
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div ng-if="matchesOnlyBase.length">
+            <h4>There are {{matchesOnlyBase.length}} tabs that match up to the
+                ?query=params:</h4>
+            <ul>
+                <li ng-repeat="tab in matchesOnlyBase track by tab.id">
+                    <a href ng-click="focusTab(tab)">{{tab.url.split('?')[1]}}</a>
+                </li>
+            </ul>
+        </div>
+
+        <script src="bower_components/angular/angular.min.js"></script>
+        <script src="bower_components/lodash/lodash.min.js"></script>
+        <script src="popup.js"></script>
     </body>
 </html>
