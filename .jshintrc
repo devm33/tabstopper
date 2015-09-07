@@ -8,6 +8,7 @@
     "browser": true,
     "globals": {
         "_": false,
+        "angular": false,
         "chrome": false,
         "console": false,
         "Path2D": true
