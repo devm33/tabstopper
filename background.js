@@ -1,59 +1,62 @@
-chrome.runtime.onInstalled.addListener(() => {
-    chrome.storage.local.tabGroups = {};
-});
-
-if(!chrome.storage.local.tabGroups) {
-    chrome.storage.local.tabGroups = {};
+if(!chrome.storage.local.tabBaseUrl) {
+    chrome.storage.local.tabBaseUrl = {};
 }
-var tabGroups = chrome.storage.local.tabGroups;
+var tabBaseUrl = chrome.storage.local.tabBaseUrl;
+
+chrome.runtime.onInstalled.addListener(() => {
+    chrome.tabs.query({}, (tabs) => {
+        _(tabs)
+            .map( (tab) => {
+                var baseUrl = getBaseUrl(tab.url);
+                tabBaseUrl[tab.id] = baseUrl;
+                return baseUrl;
+            })
+            .unique()
+            .each((baseUrl) => {
+                updateTabGroup(baseUrl);
+            })
+            .value();
+    });
+});
 
 chrome.tabs.onUpdated.addListener((tabId, change) => {
     if(!change.url) {
         // url not changed in tab update
         return;
     }
-    var baseUrl = change.url.split('#')[0].split('?')[0];
-    // FIXME issue here, on a url change on a tab that was in a tab group if
-    // the new url is unique this query might not return if the tab hasn't
-    // loaded yet, need to remove from group preemptively if baseUrl changed.
-    chrome.tabs.query({ url: baseUrl + '*' }, (tabs) => {
-        if(tabs.length > 1) {
-            updateTabGroup(_.map(tabs, 'id'));
-        } else {
-            removeFromTabGroup(tabId);
-            chrome.pageAction.hide(tabId);
-        }
-    });
+    var baseUrl = getBaseUrl(change.url);
+
+    if(tabBaseUrl[tabId] && tabBaseUrl[tabId] !== baseUrl) {
+        chrome.pageAction.hide(tabId);
+        updateTabGroup(tabBaseUrl[tabId]);
+    }
+    tabBaseUrl[tabId] = baseUrl;
+    updateTabGroup(baseUrl);
 });
 
-chrome.tabs.onRemoved.addListener(removeFromTabGroup);
-
-function removeFromTabGroup(tabId) {
-    if(tabGroups[tabId]) {
-        if(tabGroups[tabId].length === 2) {
-            _.each(tabGroups[tabId], (id) => {
-                if(id !== tabId) {
-                    chrome.pageAction.hide(id);
-                }
-                delete tabGroups[id];
-            });
-        } else {
-            updateTabGroup(_.reject(tabGroups[tabId], (id) => id === tabId));
-            delete tabGroups[tabId];
-        }
+chrome.tabs.onRemoved.addListener((tabId) => {
+    if(tabBaseUrl[tabId]) {
+        updateTabGroup(tabBaseUrl[tabId]);
+        delete tabBaseUrl[tabId];
     }
-}
+});
 
-function updateTabGroup(tabIds) {
-    var imageData = drawIcon(tabIds.length);
-    _.each(tabIds, (id) => {
-        tabGroups[id] = tabIds;
-        chrome.pageAction.show(id);
-        chrome.pageAction.setIcon({tabId: id, imageData: imageData});
-        chrome.pageAction.setTitle({
-            tabId: id,
-            title: 'This page is open in ' + tabIds.length + ' tabs.'
-        });
+function updateTabGroup(baseUrl) {
+    chrome.tabs.query({ url: baseUrl + '*' }, (tabs) => {
+        var matches = _.filter(tabs, (tab) => getBaseUrl(tab.url) === baseUrl);
+        if(matches.length > 1) {
+            var imageData = drawIcon(matches.length);
+            _(matches).map('id').each((id) => {
+                chrome.pageAction.show(id);
+                chrome.pageAction.setIcon({tabId: id, imageData: imageData});
+                chrome.pageAction.setTitle({
+                    tabId: id,
+                    title: 'This page is open in ' + matches.length + ' tabs.'
+                });
+            }).value();
+        } else if(matches.length === 1) {
+            chrome.pageAction.hide(matches[0].id);
+        }
     });
 }
 
@@ -85,4 +88,8 @@ function drawIcon(count) {
     ctx.textBaseline = 'middle';
     ctx.fillText(count+'×', W/2, H/2, maxW-minW);
     return ctx.getImageData(0, 0, 19, 19);
+}
+
+function getBaseUrl(url) {
+    return url.split('?')[0].split('#')[0];
 }
