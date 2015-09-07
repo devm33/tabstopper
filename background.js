@@ -1,42 +1,23 @@
 var tabGroups = {};
 
-chrome.tabs.onUpdated.addListener((tabId, change, changedTab) => {
+chrome.tabs.onUpdated.addListener((tabId, change) => {
     if(!change.url) {
         // url not changed in tab update
         return;
     }
-
-    var urlWithoutHash = change.url.split('#')[0];
-    var baseUrl = urlWithoutHash.split('?')[0];
-
+    var baseUrl = change.url.split('#')[0].split('?')[0];
     chrome.tabs.query({ url: baseUrl + '*' }, (tabs) => {
-        var matches = _.reject(tabs, {id: tabId});
-
-        if(_.isEmpty(matches)) {
-            // no matching open tabs at broadest level
-            return;
+        if(tabs.length > 1) {
+            updateTabGroup(_.map(tabs, 'id'));
+        } else if(tabGroups[tabId]) {
+            removeFromTabGroup(tabId);
         }
-
-        var exacts = _.filter(matches, {url: change.url});
-        var matchesExceptHash = _.filter(matches, (tab) => {
-            return tab.url.split('#')[0] === urlWithoutHash;
-        });
-
-        console.log(
-            'original tab:', tabId, changedTab, '\n',
-            'url:', change.url, '\n',
-            'baseUrl:', baseUrl, '\n',
-            'matches base:', _.map(matches, 'id'), matches, '\n',
-            'matches except hash:', _.map(matchesExceptHash, 'id'),
-            matchesExceptHash, '\n',
-            'exact matches:', _.map(exacts, 'id'), exacts, '\n'
-        );
-
-        updateTabGroup(_.map(tabs, 'id'));
     });
 });
 
-chrome.tabs.onRemoved.addListener((tabId) => {
+chrome.tabs.onRemoved.addListener(removeFromTabGroup);
+
+function removeFromTabGroup(tabId) {
     if(tabGroups[tabId]) {
         if(tabGroups[tabId].length === 2) {
             _.each(tabGroups[tabId], (id) => {
@@ -50,7 +31,7 @@ chrome.tabs.onRemoved.addListener((tabId) => {
             delete tabGroups[tabId];
         }
     }
-});
+}
 
 function updateTabGroup(tabIds) {
     var imageData = drawIcon(tabIds.length);
