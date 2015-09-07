@@ -9,7 +9,9 @@
             <h4>There are {{exacts.length}} tabs exactly matching:</h4>
             <ul>
                 <li ng-repeat="tab in exacts track by tab.id">
-                    <a href ng-click="focusTab(tab)">{{tab.title}}</a>
+                    <a href ng-click="focusTab(tab)">
+                        {{tab.title}} ({{tab.index}})
+                    </a>
                 </li>
             </ul>
         </div>
