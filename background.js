@@ -1,4 +1,5 @@
-var tabGroups = {};
+var tabGroups = {}; // TODO this is being lost on page unloading need to store elsewhere
+// or need to find other solution
 
 chrome.tabs.onUpdated.addListener((tabId, change) => {
     if(!change.url) {
@@ -11,6 +12,7 @@ chrome.tabs.onUpdated.addListener((tabId, change) => {
             updateTabGroup(_.map(tabs, 'id'));
         } else if(tabGroups[tabId]) {
             removeFromTabGroup(tabId);
+            chrome.pageAction.hide(tabId);
         }
     });
 });
