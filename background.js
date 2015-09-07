@@ -1,5 +1,11 @@
-var tabGroups = {}; // TODO this is being lost on page unloading need to store elsewhere
-// or need to find other solution
+chrome.runtime.onInstalled.addListener(() => {
+    chrome.storage.local.tabGroups = {};
+});
+
+if(!chrome.storage.local.tabGroups) {
+    chrome.storage.local.tabGroups = {};
+}
+var tabGroups = chrome.storage.local.tabGroups;
 
 chrome.tabs.onUpdated.addListener((tabId, change) => {
     if(!change.url) {
@@ -7,10 +13,13 @@ chrome.tabs.onUpdated.addListener((tabId, change) => {
         return;
     }
     var baseUrl = change.url.split('#')[0].split('?')[0];
+    // FIXME issue here, on a url change on a tab that was in a tab group if
+    // the new url is unique this query might not return if the tab hasn't
+    // loaded yet, need to remove from group preemptively if baseUrl changed.
     chrome.tabs.query({ url: baseUrl + '*' }, (tabs) => {
         if(tabs.length > 1) {
             updateTabGroup(_.map(tabs, 'id'));
-        } else if(tabGroups[tabId]) {
+        } else {
             removeFromTabGroup(tabId);
             chrome.pageAction.hide(tabId);
         }
