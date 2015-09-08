@@ -5,33 +5,26 @@ chrome.tabs.onRemoved.addListener(updateAllTabs);
 function updateAllTabs() {
     chrome.tabs.query({}, (tabs) => {
             _(tabs)
-                .map((tab) => {
+                .each((tab) => {
                     chrome.pageAction.hide(tab.id);
-                    return getBaseUrl(tab.url);
                 })
-                .unique()
-                .each((baseUrl) => {
-                    updateTabGroup(baseUrl);
-                })
+                .groupBy((tab) => getBaseUrl(tab.url))
+                .filter((tabs) => tabs.length > 1)
+                .each(addPageAction)
                 .value();
     });
 }
 
-function updateTabGroup(baseUrl) {
-    chrome.tabs.query({ url: baseUrl + '*' }, (tabs) => {
-        var matches = _.filter(tabs, (tab) => getBaseUrl(tab.url) === baseUrl);
-        if(matches.length > 1) {
-            var imageData = drawIcon(matches.length);
-            _(matches).map('id').each((id) => {
-                chrome.pageAction.show(id);
-                chrome.pageAction.setIcon({tabId: id, imageData: imageData});
-                chrome.pageAction.setTitle({
-                    tabId: id,
-                    title: 'This page is open in ' + matches.length + ' tabs.'
-                });
-            }).value();
-        }
-    });
+function addPageAction(tabs) {
+    var imageData = drawIcon(tabs.length);
+    _(tabs).map('id').each((id) => {
+        chrome.pageAction.show(id);
+        chrome.pageAction.setIcon({tabId: id, imageData: imageData});
+        chrome.pageAction.setTitle({
+            tabId: id,
+            title: 'This page is open in ' + tabs.length + ' tabs.'
+        });
+    }).value();
 }
 
 function getBaseUrl(url) {
