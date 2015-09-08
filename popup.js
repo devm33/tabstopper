@@ -16,6 +16,15 @@ function popup($scope) {
             );
             $scope.matchesOnlyBase = _.difference(matches, matchesWithoutHash);
             $scope.matchesExceptHash = _.difference(matchesWithoutHash, $scope.exacts);
+
+            var urlParts = baseUrl.split('/');
+            if(baseUrl.indexOf('://') > -1) {
+                $scope.ruleUrl = urlParts[0] + '//' + urlParts[2];
+            } else {
+                $scope.ruleUrl = urlParts[0];
+            }
+            $scope.ruleUrl += '/*';
+            $scope.matchOption = 'hash';
             $scope.$apply();
         });
     });
@@ -37,4 +46,14 @@ function popup($scope) {
         }
         return '';
     };
+
+    $scope.saveUrl = () => {
+        // TODO load and save rules in storage.sync
+        // TODO collapse/hide rule form / show success message
+    };
 }
+
+// Work-around for chrome auto-focusing first anchor tag in popup
+document.addEventListener('focusin', (event) => {
+    event.target.blur();
+});
