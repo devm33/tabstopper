@@ -1,49 +1,21 @@
-chrome.runtime.onInstalled.addListener(() => {
+chrome.runtime.onInstalled.addListener(updateAllTabs);
+chrome.tabs.onUpdated.addListener(updateAllTabs);
+chrome.tabs.onRemoved.addListener(updateAllTabs);
+
+function updateAllTabs() {
     chrome.tabs.query({}, (tabs) => {
-        loadBaseUrls((tabBaseUrl) => {
             _(tabs)
-                .map( (tab) => {
-                    var baseUrl = getBaseUrl(tab.url);
-                    tabBaseUrl[tab.id] = baseUrl;
-                    return baseUrl;
+                .map((tab) => {
+                    chrome.pageAction.hide(tab.id);
+                    return getBaseUrl(tab.url);
                 })
                 .unique()
                 .each((baseUrl) => {
                     updateTabGroup(baseUrl);
                 })
                 .value();
-            saveBaseUrls(tabBaseUrl);
-        });
     });
-});
-
-chrome.tabs.onUpdated.addListener((tabId, change) => {
-    loadBaseUrls((tabBaseUrl) => {
-        if(!change.url) {
-            // url not changed in tab update
-            return;
-        }
-        var baseUrl = getBaseUrl(change.url);
-
-        if(tabBaseUrl[tabId] && tabBaseUrl[tabId] !== baseUrl) {
-            chrome.pageAction.hide(tabId);
-            updateTabGroup(tabBaseUrl[tabId]);
-        }
-        tabBaseUrl[tabId] = baseUrl;
-        saveBaseUrls(tabBaseUrl);
-        updateTabGroup(baseUrl);
-    });
-});
-
-chrome.tabs.onRemoved.addListener((tabId) => {
-    loadBaseUrls((tabBaseUrl) => {
-        if(tabBaseUrl[tabId]) {
-            updateTabGroup(tabBaseUrl[tabId]);
-            delete tabBaseUrl[tabId];
-            saveBaseUrls(tabBaseUrl);
-        }
-    });
-});
+}
 
 function updateTabGroup(baseUrl) {
     chrome.tabs.query({ url: baseUrl + '*' }, (tabs) => {
@@ -58,10 +30,12 @@ function updateTabGroup(baseUrl) {
                     title: 'This page is open in ' + matches.length + ' tabs.'
                 });
             }).value();
-        } else if(matches.length === 1) {
-            chrome.pageAction.hide(matches[0].id);
         }
     });
+}
+
+function getBaseUrl(url) {
+    return url.split('?')[0].split('#')[0];
 }
 
 function drawIcon(count) {
@@ -92,21 +66,4 @@ function drawIcon(count) {
     ctx.textBaseline = 'middle';
     ctx.fillText(count+'×', W/2, H/2, maxW-minW);
     return ctx.getImageData(0, 0, 19, 19);
-}
-
-function getBaseUrl(url) {
-    return url.split('?')[0].split('#')[0];
-}
-
-function loadBaseUrls(callback) {
-    chrome.storage.local.get('tabBaseUrl', (storage) => {
-        if(!storage.tabBaseUrl) {
-            storage.tabBaseUrl = {};
-        }
-        callback(storage.tabBaseUrl);
-    });
-}
-
-function saveBaseUrls(tabBaseUrl) {
-    chrome.storage.local.set({tabBaseUrl: tabBaseUrl});
 }
