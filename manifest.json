@@ -2,6 +2,9 @@
     "manifest_version": 2,
     "name": "tabstopper",
     "version": "0.1",
+    "icons": {
+        "128": "icon_128.png"
+    },
     "background": {
         "persistent": false,
         "page": "background.html"
