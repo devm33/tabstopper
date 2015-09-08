@@ -40,5 +40,3 @@ function popup($scope) {
         return '';
     };
 }
-
-console.log('popup opened');
