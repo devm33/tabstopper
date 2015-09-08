@@ -29,6 +29,16 @@ function popup($scope) {
         chrome.tabs.update(tabOrId.id, {active:true});
         chrome.windows.update(tabOrId.windowId, {focused:true});
     };
+
+    $scope.pluralizeMsg = (count) => {
+        if(count == 1) {
+            return 'There is one other tab';
+        }
+        if(count > 1) {
+            return 'There are ' + count + ' tabs';
+        }
+        return '';
+    };
 }
 
 console.log('popup opened');

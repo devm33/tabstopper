@@ -8,7 +8,7 @@
         <h3>This page is open in {{tabs.length}} tabs</h3>
 
         <div ng-if="exacts.length">
-            <h4>There are {{exacts.length}} tabs exactly matching:</h4>
+            <h4>{{pluralizeMsg(exacts.length)}} exactly matching:</h4>
             <ul>
                 <li ng-repeat="tab in exacts track by tab.id">
                     <a href ng-click="focusTab(tab)">
@@ -18,20 +18,20 @@
             </ul>
         </div>
 
-        <div ng-if="matchExceptHash.length">
-            <h4>There are {{matchesExceptHash.length}} tabs matching the
-                current url except for their #hash values:</h4>
+        <div ng-if="matchesExceptHash.length">
+            <h4>{{pluralizeMsg(matchesExceptHash.length)}} matching the current
+                url except for the #hash value.</h4>
             <ul>
-                <li ng-repeat="tab in matchExceptHash track by tab.id">
+                <li ng-repeat="tab in matchesExceptHash track by tab.id">
                     <a href ng-click="focusTab(tab)">
-                        {{tab.url.split('#')[1]}}
+                        #{{tab.url.split('#')[1]}}
                     </a>
                 </li>
             </ul>
         </div>
 
         <div ng-if="matchesOnlyBase.length">
-            <h4>There are {{matchesOnlyBase.length}} tabs that match up to the
+            <h4>{{pluralizeMsg(matchesOnlyBase.length)}} that match up to the
                 ?query=params:</h4>
             <ul>
                 <li ng-repeat="tab in matchesOnlyBase track by tab.id">
