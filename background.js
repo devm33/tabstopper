@@ -1,4 +1,4 @@
-chrome.runtime.onInstalled.addListener(updateAllTabs);
+chrome.runtime.onInstalled.addListener(updateAllTabs); // TODO open options page
 chrome.tabs.onUpdated.addListener(updateAllTabs);
 chrome.tabs.onRemoved.addListener(updateAllTabs);
 
