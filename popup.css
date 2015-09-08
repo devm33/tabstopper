@@ -1,3 +1,7 @@
 body {
-    min-width: 300px;
+    min-width: 350px;
+}
+
+.click {
+    cursor: pointer;
 }

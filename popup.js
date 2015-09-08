@@ -1,9 +1,9 @@
 angular.module('popup', []).controller('popup', popup);
 
 function popup($scope) {
+    var currentTab;
     chrome.tabs.query({active: true, currentWindow: true}, (currentTabs) => {
-        var currentTab = currentTabs[0];
-        console.log(currentTab);
+        currentTab = currentTabs[0];
         var urlWithoutHash = currentTab.url.split('#')[0];
         var baseUrl = urlWithoutHash.split('?')[0];
 
@@ -17,17 +17,15 @@ function popup($scope) {
             $scope.matchesOnlyBase = _.difference(matches, matchesWithoutHash);
             $scope.matchesExceptHash = _.difference(matchesWithoutHash, $scope.exacts);
             $scope.$apply();
-            console.log($scope);
         });
     });
 
-    $scope.focusTab = (tabOrId) => {
-        if(_.isNumber(tabOrId)) {
-            chrome.tab.get(tabOrId, $scope.focusTab);
-            return;
+    $scope.goto = (tab) => {
+        chrome.tabs.update(tab.id, {active:true});
+        chrome.windows.update(tab.windowId, {focused:true});
+        if($scope.closeTab) {
+            chrome.tabs.remove(currentTab.id);
         }
-        chrome.tabs.update(tabOrId.id, {active:true});
-        chrome.windows.update(tabOrId.windowId, {focused:true});
     };
 
     $scope.pluralizeMsg = (count) => {

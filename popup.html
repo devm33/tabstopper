@@ -11,7 +11,7 @@
             <h4>{{pluralizeMsg(exacts.length)}} exactly matching</h4>
             <ul>
                 <li ng-repeat="tab in exacts track by tab.id">
-                    <a href ng-click="focusTab(tab)">
+                    <a href ng-click="goto(tab)">
                         {{tab.title}} ({{tab.index}})
                     </a>
                 </li>
@@ -23,7 +23,7 @@
                 url except for the #hash value</h4>
             <ul>
                 <li ng-repeat="tab in matchesExceptHash track by tab.id">
-                    <a href ng-click="focusTab(tab)">
+                    <a href ng-click="goto(tab)">
                         #{{tab.url.split('#')[1]}} ({{tab.index}})
                     </a>
                 </li>
@@ -35,7 +35,7 @@
             </h4>
             <ul>
                 <li ng-repeat="tab in matchesOnlyBase track by tab.id">
-                    <a href ng-click="focusTab(tab)">
+                    <a href ng-click="goto(tab)">
                         {{(tab.url.split('?')[1]||'no params')|limitTo:15}}{{
                         tab.url.split('?')[1].length > 15 ? '...':''}}
                         ({{tab.index}})
@@ -43,6 +43,12 @@
                 </li>
             </ul>
         </div>
+
+        <div class="click" ng-click="closeTab = !closeTab">
+            <input type="checkbox" ng-model="closeTab">
+            Also close current tab when another tab above is clicked
+        </div>
+
 
         <script src="bower_components/angular/angular.min.js"></script>
         <script src="bower_components/lodash/lodash.min.js"></script>
