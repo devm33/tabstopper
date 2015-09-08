@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="popup.css">
     </head>
-    <body ng-app="popup" ng-controller="popup">
+    <body ng-app="popup" ng-controller="popup" class="container">
 
-        <h3>This page is open in {{tabs.length}} tabs</h3>
+        <h4>This page is open in {{tabs.length}} tabs</h4>
 
         <div ng-if="exacts.length">
-            <h4>{{pluralizeMsg(exacts.length)}} exactly matching</h4>
+            <h5>{{pluralizeMsg(exacts.length)}} exactly matching</h5>
             <ul>
                 <li ng-repeat="tab in exacts track by tab.id">
                     <a href ng-click="goto(tab)">
@@ -19,8 +20,8 @@
         </div>
 
         <div ng-if="matchesExceptHash.length">
-            <h4>{{pluralizeMsg(matchesExceptHash.length)}} matching the current
-                url except for the #hash value</h4>
+            <h5>{{pluralizeMsg(matchesExceptHash.length)}} matching the current
+                url except for the #hash value</h5>
             <ul>
                 <li ng-repeat="tab in matchesExceptHash track by tab.id">
                     <a href ng-click="goto(tab)">
@@ -31,8 +32,8 @@
         </div>
 
         <div ng-if="matchesOnlyBase.length">
-            <h4>{{pluralizeMsg(matchesOnlyBase.length)}} matching up to the ?
-            </h4>
+            <h5>{{pluralizeMsg(matchesOnlyBase.length)}} matching up to the ?
+            </h5>
             <ul>
                 <li ng-repeat="tab in matchesOnlyBase track by tab.id">
                     <a href ng-click="goto(tab)">
@@ -44,11 +45,47 @@
             </ul>
         </div>
 
-        <div>
-            <label class="click">
+        <p>Click to go to tab</p>
+
+        <div class="checkbox">
+            <label>
                 <input type="checkbox" ng-model="closeTab">
-                Also close current tab when another tab above is clicked
+                Also close current tab on click
             </label>
+        </div>
+
+        <hr>
+
+        <div class="form-group">
+            <p>Add a rule to close tabs that match</p>
+
+            <div class="radio">
+                <label>
+                    <input type="radio" ng-model="matchOption" value="hash"/>
+                    everyting except the #hash
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" ng-model="matchOption" value="base"/>
+                    up to the ?query=params
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" ng-model="matchOption" value="exact"/>
+                    exactly
+                </label>
+            </div>
+
+            <p>For all pages on</p>
+            <input type="text" ng-model="ruleUrl" class="form-control"/>
+        </div>
+        <div class="form-group clearfix">
+            <button ng-click="saveRule()"
+                class="btn btn-primary pull-right">
+                Save rule
+            </button>
         </div>
 
 
