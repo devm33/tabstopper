@@ -1,4 +1,5 @@
-chrome.runtime.onInstalled.addListener(updateAllTabs); // TODO open options page
+chrome.runtime.onInstalled.addListener(updateAllTabs);
+// TODO open options page on installed with screenshots
 chrome.tabs.onUpdated.addListener(updateAllTabs);
 chrome.tabs.onRemoved.addListener(updateAllTabs);
 
@@ -16,6 +17,7 @@ function updateAllTabs() {
 }
 
 function addPageAction(tabs) {
+    // TODO apply rules here I think (load in updateAll though so its only done once)
     var imageData = drawIcon(tabs.length);
     _(tabs).map('id').each((id) => {
         chrome.pageAction.show(id);
