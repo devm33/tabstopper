@@ -59,6 +59,6 @@ function drawIcon(count) {
     ctx.font = '10px sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(count+'×', W/2, H/2, maxW-minW);
+    ctx.fillText(count+'x', W/2, H/2, maxW-minW);
     return ctx.getImageData(0, 0, 19, 19);
 }
