@@ -1,4 +1,4 @@
-/*global matchRule,loadRules,saveRules*/
+/*global matchRule,loadRules,saveRules,loadCloseSetting*/
 angular.module('popup', []).controller('popup', popup);
 
 function popup($scope) {
@@ -38,6 +38,11 @@ function popup($scope) {
                 $scope.$apply();
             });
         });
+    });
+
+    loadCloseSetting((close) => {
+        $scope.closeTab = close;
+        $scope.$apply();
     });
 
     $scope.goto = (tab) => {
