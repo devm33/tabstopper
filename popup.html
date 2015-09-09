@@ -56,41 +56,45 @@
 
         <hr>
 
-        <div class="form-group">
-            <p>Add a rule to close tabs that match</p>
+        <div ng-if="showRuleForm">
+            <p ng-if="!savedRule">Add a rule to close tabs that match</p>
+            <p ng-if="savedRule">Update the current rule to close tabs that match</p>
 
             <div class="radio">
                 <label>
-                    <input type="radio" ng-model="matchOption" value="hash"/>
+                    <input type="radio" ng-model="rule.match" value="hash"/>
                     everyting except the #hash
                 </label>
             </div>
             <div class="radio">
                 <label>
-                    <input type="radio" ng-model="matchOption" value="base"/>
+                    <input type="radio" ng-model="rule.match" value="base"/>
                     up to the ?query=params
                 </label>
             </div>
             <div class="radio">
                 <label>
-                    <input type="radio" ng-model="matchOption" value="exact"/>
+                    <input type="radio" ng-model="rule.match" value="exact"/>
                     exactly
                 </label>
             </div>
 
-            <p>For all pages on</p>
-            <input type="text" ng-model="ruleUrl" class="form-control"/>
-        </div>
-        <div class="form-group clearfix">
-            <button ng-click="saveRule()"
-                class="btn btn-primary pull-right">
-                Save rule
-            </button>
+            <div class="form-group">
+                <p>For all pages with urls containing</p>
+                <input type="text" ng-model="rule.url" class="form-control"/>
+            </div>
+            <div class="form-group clearfix">
+                <button ng-click="saveRule()"
+                    class="btn btn-primary pull-right">
+                    {{savedRule? 'Update':'Save'}} rule
+                </button>
+            </div>
         </div>
 
 
         <script src="bower_components/angular/angular.min.js"></script>
         <script src="bower_components/lodash/lodash.min.js"></script>
+        <script src="rules.js"></script>
         <script src="popup.js"></script>
     </body>
 </html>

@@ -18,14 +18,24 @@ function popup($scope) {
             $scope.matchesExceptHash = _.difference(matchesWithoutHash, $scope.exacts);
 
             var urlParts = baseUrl.split('/');
+            $scope.rule = {};
             if(baseUrl.indexOf('://') > -1) {
-                $scope.ruleUrl = urlParts[0] + '//' + urlParts[2];
+                $scope.rule.url = urlParts[0] + '//' + urlParts[2];
             } else {
-                $scope.ruleUrl = urlParts[0];
+                $scope.rule.url = urlParts[0];
             }
-            $scope.ruleUrl += '/*';
-            $scope.matchOption = 'hash';
+            $scope.rule.match = 'hash';
             $scope.$apply();
+
+            matchRule(baseUrl, (rule) => {
+                if(rule) {
+                    $scope.rule = rule;
+                    $scope.savedRule = _.clone(rule);
+                }
+                // loading done: safe to show form for user input
+                $scope.showRuleForm = true;
+                $scope.$apply();
+            });
         });
     });
 
@@ -47,13 +57,22 @@ function popup($scope) {
         return '';
     };
 
-    $scope.saveUrl = () => {
-        // TODO load and save rules in storage.sync
-        // TODO collapse/hide rule form / show success message
+    $scope.saveRule = () => {
+        loadRules((rules) => {
+            if($scope.savedRule) {
+                delete rules[$scope.savedRule.url];
+            }
+            rules[$scope.rule.url] = $scope.rule.match;
+            saveRules(rules);
+            $scope.savedRule = _.clone($scope.rule);
+            $scope.$apply();
+        });
     };
 }
 
 // Work-around for chrome auto-focusing first anchor tag in popup
-document.addEventListener('focusin', (event) => {
+function focus(event) {
     event.target.blur();
-});
+    document.removeEventListener(focus);
+}
+document.addEventListener('focus', focus);
