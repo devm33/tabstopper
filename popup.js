@@ -46,11 +46,11 @@ function popup($scope) {
     });
 
     $scope.goto = (tab) => {
-        chrome.tabs.update(tab.id, {active:true});
-        chrome.windows.update(tab.windowId, {focused:true});
         if($scope.closeTab) {
             chrome.tabs.remove(currentTab.id);
         }
+        chrome.tabs.update(tab.id, {active:true});
+        chrome.windows.update(tab.windowId, {focused:true});
     };
 
     $scope.pluralizeMsg = (count) => {
