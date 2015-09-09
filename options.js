@@ -16,14 +16,6 @@ function options($scope) {
         });
     }
 
-    $scope.saveClose = (close) => {
-        $scope.closeSaved = false;
-        saveCloseSetting(close, () => {
-            $scope.closeSaved = true;
-            $scope.$apply();
-        });
-    };
-
     $scope.saveRule = () => {
         $scope.ruleSaved = false;
         $scope.rules[$scope.rule.url] = $scope.rule.match;
@@ -43,5 +35,12 @@ function options($scope) {
     loadCloseSetting((close) => {
         $scope.close = close;
         $scope.$apply();
+        $scope.$watch('close', (close) => {
+            $scope.closeSaved = false;
+            saveCloseSetting(close, () => {
+                $scope.closeSaved = true;
+                $scope.$apply();
+            });
+        });
     });
 }
