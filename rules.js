@@ -8,8 +8,8 @@ function loadRules(callback) {
     });
 }
 
-function saveRules(rules) {
-    chrome.storage.sync.set({rules: rules});
+function saveRules(rules, callback) {
+    chrome.storage.sync.set({rules: rules}, callback);
 }
 
 function matchRule(baseUrl, callback) {
@@ -34,4 +34,12 @@ function matchRule(baseUrl, callback) {
             callback();
         }
     });
+}
+
+function loadCloseSetting(callback) {
+    chrome.storage.sync.get('close', (storage) => callback(storage.close));
+}
+
+function saveCloseSetting(close, callback) {
+    chrome.storage.sync.set({close: close}, callback);
 }
