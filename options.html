@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Options for TabStopper</title>
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    </head>
+    <body ng-app="options" ng-controller="options" class="container">
+        <p>Table of rules:<p>
+        <table class="table table-bordered">
+            <thead>
+                <td>Pages with url containing</td>
+                <td>And matching other tabs</td>
+            </thead>
+            <tr ng-repeat="(url, match) in rules track by url">
+                <td>{{url}}</td>
+                <td>{{matchCopy[match]}}</td>
+            </tr>
+            <tr>
+                <td><input type="text" ng-model="rule.url"/></td>
+                <td>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" ng-model="rule.match" value="hash"/>
+                            everyting except the #hash
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" ng-model="rule.match" value="base"/>
+                            up to the ?
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" ng-model="rule.match" value="exact"/>
+                            exactly
+                        </label>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div class="clearfix form-group">
+            <button class="btn btn-primary pull-right">Add rule</button>
+        </div>
+
+        <script src="bower_components/angular/angular.min.js"></script>
+        <script src="bower_components/lodash/lodash.min.js"></script>
+        <script src="rules.js"></script>
+        <script src="options.js"></script>
+    </body>
+</html>
+

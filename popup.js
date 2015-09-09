@@ -68,6 +68,10 @@ function popup($scope) {
             $scope.$apply();
         });
     };
+
+    $scope.showOptions = () => {
+        chrome.runtime.openOptionsPage();
+    };
 }
 
 // Work-around for chrome auto-focusing first anchor tag in popup
