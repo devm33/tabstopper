@@ -28,6 +28,7 @@ function options($scope, $timeout) {
     }
 
     $scope.saveRule = () => {
+        delete $scope.editingRule;
         $scope.ruleSaved = false;
         $scope.rules[$scope.rule.url] = $scope.rule.match;
         saveRules($scope.rules, reloadRules);
@@ -37,6 +38,16 @@ function options($scope, $timeout) {
         delete $scope.rules[url];
         saveRules($scope.rules, reloadRules);
     };
+
+    $scope.editRule = (url, match) => {
+        $scope.editingRule = url;
+        $scope.rule = {
+            url: url,
+            match: match
+        };
+    };
+
+    $scope.editing = (url) => url === $scope.editingRule;
 
     loadCloseSetting((close) => {
         $scope.close = close;

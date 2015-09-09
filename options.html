@@ -18,13 +18,14 @@
                 <td>Pages with url containing</td>
                 <td>And matching other tabs</td>
             </thead>
-            <tr ng-repeat="(url, match) in rules track by url">
+            <tr ng-repeat="(url, match) in rules track by url"
+                ng-class="{active:editing(url)}">
                 <td>{{url}}</td>
                 <td>{{matchCopy[match]}}</td>
                 <td>
                     <div class="dont-wrap-btn-group btn-group">
                         <button class="btn btn-default"
-                            ng-click="edit(url, match)">Edit</button>
+                            ng-click="editRule(url, match)">Edit</button>
                         <button class="btn btn-danger"
                             ng-click="deleteRule(url)">&times;</button>
                     </div>
@@ -54,7 +55,7 @@
                 <td>
                     <button class="btn btn-primary"
                         ng-class="{disabled:!rule.url}"
-                        ng-click="saveRule(rule.url, rule.match)">+</button>
+                        ng-click="saveRule(rule.url, rule.match)">Save</button>
                 </td>
             </tr>
         </table>
