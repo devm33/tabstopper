@@ -1,5 +1,4 @@
 chrome.runtime.onInstalled.addListener(updateAllTabs);
-// TODO open options page on installed with screenshots
 chrome.tabs.onUpdated.addListener(updateAllTabs);
 chrome.tabs.onRemoved.addListener(updateAllTabs);
 
