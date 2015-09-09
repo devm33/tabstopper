@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     </head>
     <body ng-app="options" ng-controller="options" class="container">
-        <p>Table of rules:<p>
+        <h4>Table of rules</h4>
         <table class="table table-bordered">
             <thead>
                 <td>Pages with url containing</td>
@@ -14,37 +14,50 @@
             <tr ng-repeat="(url, match) in rules track by url">
                 <td>{{url}}</td>
                 <td>{{matchCopy[match]}}</td>
+                <td>
+                    <button class="btn btn-default" ng-click="edit(url, match)">
+                        Edit
+                    </button>
+                    <button class="btn btn-warning" ng-click="deleteRule(url)">
+                        &mtimes;
+                    </button>
+                </td>
             </tr>
             <tr>
-                <td><input type="text" ng-model="rule.url"/></td>
                 <td>
-                    <div class="radio">
+                    <input required type="text" class="form-control"
+                    ng-model="rule.url"/>
+                </td>
+                <td>
+                    <div class="radio" ng-repeat="(match,copy) in matchCopy">
                         <label>
-                            <input type="radio" ng-model="rule.match" value="hash"/>
-                            everyting except the #hash
-                        </label>
-                    </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" ng-model="rule.match" value="base"/>
-                            up to the ?
-                        </label>
-                    </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" ng-model="rule.match" value="exact"/>
-                            exactly
+                            <input type="radio" ng-model="rule.match" ng-value="match"/>
+                            {{copy}}
                         </label>
                     </div>
                 </td>
+                <td>
+                    <button class="btn btn-primary"
+                        ng-class="{disabled:!rule.url}"
+                        ng-click="saveRule(rule.url, rule.match)">+</button>
+                </td>
             </tr>
         </table>
-        <div class="clearfix form-group">
-            <button class="btn btn-primary pull-right">Add rule</button>
+        <p ng-if="ruleSaved" class="text-primary"><small>Rule saved</small></p>
+
+        <h4>Other settings</h4>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="close"/>
+                Default setting for auto close in popup
+            </label>
         </div>
+        <p ng-if="closeSaved" class="text-primary"><small>Setting saved</small></p>
+
 
         <script src="bower_components/angular/angular.min.js"></script>
         <script src="bower_components/lodash/lodash.min.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="rules.js"></script>
         <script src="options.js"></script>
     </body>
