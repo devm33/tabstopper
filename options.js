@@ -28,10 +28,12 @@ function options($scope, $timeout) {
     }
 
     $scope.saveRule = () => {
-        delete $scope.editingRule;
-        $scope.ruleSaved = false;
-        $scope.rules[$scope.rule.url] = $scope.rule.match;
-        saveRules($scope.rules, reloadRules);
+        if($scope.rule.url) {
+            delete $scope.editingRule;
+            $scope.ruleSaved = false;
+            $scope.rules[$scope.rule.url] = $scope.rule.match;
+            saveRules($scope.rules, reloadRules);
+        }
     };
 
     $scope.deleteRule = (url) => {
