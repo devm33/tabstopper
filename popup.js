@@ -74,10 +74,3 @@ function popup($scope) {
         chrome.runtime.openOptionsPage();
     };
 }
-
-// Work-around for chrome auto-focusing first anchor tag in popup
-function focus(event) {
-    event.target.blur();
-    document.removeEventListener(focus);
-}
-document.addEventListener('focus', focus);
