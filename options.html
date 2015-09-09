@@ -12,11 +12,11 @@
             </span>
         </div>
 
-        <h4>Table of rules</h4>
+        <h4>Tabs will be closed when</h4>
         <table class="table table-bordered">
             <thead>
-                <td>Pages with url containing</td>
-                <td>And matching other tabs</td>
+                <td>The urls contain</td>
+                <td>and they match each other</td>
             </thead>
             <tr ng-repeat="(url, match) in rules track by url"
                 ng-class="{active:editing(url)}">
@@ -64,7 +64,7 @@
         <div class="checkbox">
             <label>
                 <input type="checkbox" ng-model="close"/>
-                Auto close tab when link for another tab is clicked
+                Close tab when link for another tab is clicked in popup
             </label>
         </div>
 
