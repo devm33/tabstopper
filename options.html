@@ -3,6 +3,7 @@
     <head>
         <title>Options for TabStopper</title>
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="options.css">
     </head>
     <body ng-app="options" ng-controller="options" class="container">
         <h4>Table of rules</h4>
@@ -29,11 +30,18 @@
                     ng-model="rule.url"/>
                 </td>
                 <td>
-                    <div class="radio" ng-repeat="(match,copy) in matchCopy">
-                        <label>
-                            <input type="radio" ng-model="rule.match" ng-value="match"/>
-                            {{copy}}
-                        </label>
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle"
+                            data-toggle="dropdown">
+                            {{matchCopy[rule.match]}}
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li ng-repeat="(match,copy) in matchCopy">
+                                <a href ng-click="rule.match = copy">
+                                    {{copy}}
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </td>
                 <td>
@@ -49,7 +57,7 @@
         <div class="checkbox">
             <label>
                 <input type="checkbox" ng-model="close"/>
-                Default setting for auto close in popup
+                Auto close tab when link for another tab is clicked
             </label>
         </div>
         <p ng-if="closeSaved" class="text-primary"><small>Setting saved</small></p>
@@ -57,6 +65,7 @@
 
         <script src="bower_components/angular/angular.min.js"></script>
         <script src="bower_components/lodash/lodash.min.js"></script>
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
         <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="rules.js"></script>
         <script src="options.js"></script>
