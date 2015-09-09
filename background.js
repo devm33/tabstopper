@@ -1,3 +1,4 @@
+/*global matchRule*/
 chrome.runtime.onInstalled.addListener(updateAllTabs);
 chrome.tabs.onUpdated.addListener(updateAllTabs);
 chrome.tabs.onRemoved.addListener(updateAllTabs);
@@ -9,14 +10,50 @@ function updateAllTabs() {
                     chrome.pageAction.hide(tab.id);
                 })
                 .groupBy((tab) => getBaseUrl(tab.url))
-                .filter((tabs) => tabs.length > 1)
-                .each(addPageAction)
+                .pick((tabs) => tabs.length > 1)
+                .each(checkGroup)
                 .value();
     });
 }
 
+function checkGroup(tabs, baseUrl) {
+    matchRule(baseUrl, (rule) => {
+        if(rule) {
+            var originalTabs = _(tabs).map('id').sortBy('index').value();
+            _.each(originalTabs, (id) => {
+                var cur = _.find(tabs, {id:id});
+                if(cur) {
+                    var ruleGroup = ruleSubgroup(cur, tabs, rule.match);
+                    if(ruleGroup.length > 0) {
+                        _.each(ruleGroup, (tab) => {
+                            chrome.tabs.remove(tab.id);
+                            _.remove(tabs, {id:tab.id});
+                        });
+                        chrome.tabs.update(cur.id, {active:true});
+                        chrome.windows.update(cur.windowId, {focused:true});
+                    }
+                }
+            });
+        }
+
+        if(tabs.length > 1) {
+            addPageAction(tabs);
+        }
+    });
+}
+
+function ruleSubgroup(cur, tabs, match) {
+    var matches = _.reject(tabs, {id: cur.id});
+    var groups = {};
+    groups.exact = _.filter(matches, {url: cur.url});
+    var urlNoHash = cur.url.split('#')[0];
+    groups.hash = _.filter(matches, (tab) => tab.url.split('#')[0] === urlNoHash);
+    var urlNoQuery = cur.url.split('?')[0];
+    groups.base = _.filter(matches, (tab) => tab.url.split('?')[0] === urlNoQuery);
+    return groups[match];
+}
+
 function addPageAction(tabs) {
-    // TODO apply rules here I think (load in updateAll though so its only done once)
     var imageData = drawIcon(tabs.length);
     _(tabs).map('id').each((id) => {
         chrome.pageAction.show(id);
