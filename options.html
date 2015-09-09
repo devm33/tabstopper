@@ -22,12 +22,12 @@
                 <td>{{url}}</td>
                 <td>{{matchCopy[match]}}</td>
                 <td>
-                    <button class="btn btn-default" ng-click="edit(url, match)">
-                        Edit
-                    </button>
-                    <button class="btn btn-warning" ng-click="deleteRule(url)">
-                        &mtimes;
-                    </button>
+                    <div class="dont-wrap-btn-group btn-group">
+                        <button class="btn btn-default"
+                            ng-click="edit(url, match)">Edit</button>
+                        <button class="btn btn-danger"
+                            ng-click="deleteRule(url)">&times;</button>
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -40,10 +40,11 @@
                         <button class="btn btn-default dropdown-toggle"
                             data-toggle="dropdown">
                             {{matchCopy[rule.match]}}
+                            <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
                             <li ng-repeat="(match,copy) in matchCopy">
-                                <a href ng-click="rule.match = copy">
+                                <a href ng-click="rule.match = match">
                                     {{copy}}
                                 </a>
                             </li>

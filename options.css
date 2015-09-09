@@ -20,3 +20,7 @@ body {
 .saved-alert.show {
     top: 0px;
 }
+
+.btn-group.dont-wrap-btn-group {
+    display: flex;
+}
