@@ -1,3 +1,4 @@
+/*jshint unused:false*/
 function loadRules(callback) {
     chrome.storage.sync.get('rules', (storage) => {
         if(!storage.rules) {
