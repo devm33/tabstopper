@@ -1,3 +1,4 @@
+/*global matchRule,loadRules,saveRules*/
 angular.module('popup', []).controller('popup', popup);
 
 function popup($scope) {
