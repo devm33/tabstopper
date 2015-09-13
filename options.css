@@ -28,13 +28,37 @@ body {
 .list.rule-list {
     border: 1px solid #d9d9d9;
     border-radius: 2px;
+    outline: none;
+    overflow: auto;
+    position: relative;
+}
+
+.rule-list .listitem {
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0);
+    border-radius: 0;
+    border: none;
+    box-sizing: border-box;
+    cursor: default;
+    display: flex;
+    height: 32px;
+    justify-content: space-around;
+    line-height: 20px;
+    margin: 0;
+    overflow: hidden;
+    padding: 0 3px;
+    position: relative;
+    text-overflow: ellipsis;
+    transition: 150ms background-color;
+    -webkit-user-select: none;
+}
+
+.rule-list .listitem.editable:hover {
+    background-color: rgb(228, 236, 247);
 }
 
 .rule-list .col {
-    -webkit-box-align: center;
-    -webkit-padding-end: 1ex;
     box-sizing: border-box;
-    display: -webkit-box;
     width: 50%;
 }
 
@@ -52,12 +76,14 @@ body {
   width: 16px;
 }
 
-.list > *:not(:hover):not(.selected) .row-delete-button {
+.list > .listitem:not(:hover):not(.selected) .row-delete-button,
+.list > .listitem:not(.editable) .row-delete-button {
+{
   opacity: 0;
   pointer-events: none;
 }
 
-.list div[role='listitem'] .row-delete-button {
+.list .listitem .row-delete-button {
   opacity: 1;
 }
 
