@@ -30,6 +30,14 @@ body {
     border-radius: 2px;
 }
 
+.rule-list .col {
+    -webkit-box-align: center;
+    -webkit-padding-end: 1ex;
+    box-sizing: border-box;
+    display: -webkit-box;
+    width: 50%;
+}
+
 .list .row-delete-button {
   -webkit-transition: 150ms opacity;
   background-color: transparent;
@@ -44,11 +52,7 @@ body {
   width: 16px;
 }
 
-.list > *:not(:hover):not([selected]):not([lead]) .row-delete-button,
-.list:not([has-element-focus]) > *:not(:hover):not([selected])
-    .row-delete-button,
-.list[disabled] .row-delete-button,
-.list .row-delete-button[disabled] {
+.list > *:not(:hover):not(.selected) .row-delete-button {
   opacity: 0;
   pointer-events: none;
 }
