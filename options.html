@@ -13,13 +13,22 @@
 
         <h4>Tabs will be closed when</h4>
         <div class="list rule-list" role="list">
-            <div role="listitem">
-
+            <div class="listitem" role="listitem">
+                <div class="col url-column">The urls contain</div>
+                <div class="col match-column">and they match each other's urls
+                </div>
             </div>
-            <div role="listitem" ng-repeat="(url, match) in rules track by url"
-                ng-attr-editing="
-                >
-
+            <div class="listitem" role="listitem"
+                ng-repeat="(url, match) in rules track by url"
+                ng-class="{selected: selected == url}">
+                <div class="col url-column">
+                    {{url}}
+                </div>
+                <div class="col match-column">
+                    {{matchCopy[match]}}
+                </div>
+                <button class="row-delete-button" tabindex="0"
+                    title="Delete this item"></button>
             </div>
 
         </div>
