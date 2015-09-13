@@ -13,7 +13,7 @@
 
         <h4>Tabs will be closed when</h4>
         <div class="list rule-list" role="list">
-            <div class="listitem" role="listitem">
+            <div class="listitem disabled" role="listitem">
                 <div class="col url-column">
                     The urls contain
                 </div>
@@ -23,7 +23,7 @@
                 <button class="row-delete-button" tabindex="0"
                     title="Delete this item"></button>
             </div>
-            <div class="listitem editable" role="listitem"
+            <div class="listitem" role="listitem"
                 ng-repeat="(url, match) in rules track by url"
                 ng-class="{selected: selected == url}">
                 <div class="col url-column">
