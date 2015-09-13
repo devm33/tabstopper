@@ -1,5 +1,7 @@
 /*global loadRules,saveRules,loadCloseSetting,saveCloseSetting*/
-angular.module('options', []).controller('options', options);
+angular.module('options', [])
+    .controller('options', options)
+    .directive('addAttr', addAttr);
 
 function options($scope, $timeout) {
     $scope.matchCopy = {
@@ -69,4 +71,11 @@ function options($scope, $timeout) {
     }
 
     reloadRules();
+}
+
+function addAttr() {
+    return {
+        link: function($scope, $element, $attrs) {
+        }
+    };
 }
