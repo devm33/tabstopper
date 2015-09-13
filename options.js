@@ -1,7 +1,5 @@
 /*global loadRules,saveRules,loadCloseSetting,saveCloseSetting*/
-angular.module('options', [])
-    .controller('options', options)
-    .directive('dynAttrs', dynAttrs);
+angular.module('options', []).controller('options', options);
 
 function options($scope, $timeout) {
     $scope.matchCopy = {
@@ -71,20 +69,4 @@ function options($scope, $timeout) {
     }
 
     reloadRules();
-}
-
-function dynAttrs() {
-    return {
-        link: function(scope, element, attrs) {
-            scope.$watch(attrs.dynAttrs, (dynAttrs) => {
-                _.each(dynAttrs, (val, attr) => {
-                    if(val) {
-                        element.attr(attr, val);
-                    } else {
-                        element.removeAttr(attr);
-                    }
-                });
-            });
-        }
-    };
 }
