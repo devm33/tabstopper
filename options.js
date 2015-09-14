@@ -1,16 +1,19 @@
 /*global loadRules,saveRules,loadCloseSetting,saveCloseSetting*/
-angular.module('options', []).controller('options', options);
+angular.module('options', [])
+    .controller('options', options)
+    .directive('dropdown', dropdown);
 
 function options($scope, $timeout) {
+    /* Rules table */
     $scope.matchCopy = {
         exact: 'exactly',
         base: 'up to the ?',
         hash: 'up to the #'
     };
 
-    function reloadRules() {
-        if($scope.rule) {
-            postSaved();
+    function reloadRules(dontDisplaySaved) {
+        if(!dontDisplaySaved) {
+            displaySaved();
         }
         $scope.rule = {match: 'hash'};
         loadRules((rules) => {
@@ -19,19 +22,9 @@ function options($scope, $timeout) {
         });
     }
 
-    function postSaved() {
-        $scope.settingsSaved = true;
-        $timeout(() => {
-            $scope.settingsSaved = false;
-        }, 3000);
-        $scope.$apply();
-    }
-
-    $scope.saveRule = () => {
-        if($scope.rule.url) {
-            delete $scope.editingRule;
-            $scope.ruleSaved = false;
-            $scope.rules[$scope.rule.url] = $scope.rule.match;
+    $scope.addRule = () => {
+        if($scope.newRule.url) {
+            $scope.rules[$scope.newRule.url] = $scope.newRule.match;
             saveRules($scope.rules, reloadRules);
         }
     };
@@ -41,16 +34,10 @@ function options($scope, $timeout) {
         saveRules($scope.rules, reloadRules);
     };
 
-    $scope.editRule = (url, match) => {
-        $scope.editingRule = url;
-        $scope.rule = {
-            url: url,
-            match: match
-        };
-    };
+    $scope.select = (url) => $scope.selected = url;
+    reloadRules(true);
 
-    $scope.editing = (url) => url === $scope.editingRule;
-
+    /* Other settings */
     loadCloseSetting((close) => {
         $scope.close = close;
         $scope.$apply();
@@ -63,10 +50,39 @@ function options($scope, $timeout) {
             if(ignoreFirst) {
                 ignoreFirst = false;
             } else {
-                saveCloseSetting(close, postSaved);
+                saveCloseSetting(close, displaySaved);
             }
         });
     }
 
-    reloadRules();
+    /* Settings saved notiication */
+    function displaySaved() {
+        $scope.settingsSaved = true;
+        $timeout(() => {
+            $scope.settingsSaved = false;
+        }, 3000);
+        $scope.$apply();
+    }
+}
+
+function dropdown() {
+    return {
+        scope: { options: '=', value: '=' },
+        template: '<div class="dropdown">' +
+            '<button ng-click="toggle()">{{options[value]}}</button>' +
+            '<div class="dropdown-menu">' +
+            '<div ng-class="dropdownMenu"' +
+            'ng-repeat="(val, name) in options" ng-click="click(val)">' +
+            '{{name}}</div></div></div>',
+        controller: function($scope) {
+            $scope.dropdownMenu = {open: false};
+            $scope.toggle = () => {
+                $scope.dropdownMenu.open = !$scope.dropdownMenu.open;
+            };
+            $scope.click = (val) => {
+                $scope.value = val;
+                $scope.dropdownMenu.open = false;
+            };
+        }
+    };
 }
