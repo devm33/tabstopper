@@ -1,5 +1,6 @@
 body {
     padding-bottom: 10px;
+    max-width: 700px;
 }
 
 .saved-alert .saved-alert-box {
@@ -29,7 +30,6 @@ body {
     border: 1px solid #d9d9d9;
     border-radius: 2px;
     outline: none;
-    overflow: auto;
     position: relative;
 }
 
@@ -45,10 +45,8 @@ body {
     justify-content: space-around;
     line-height: 20px;
     margin: 0;
-    overflow: hidden;
     padding: 0 3px;
     position: relative;
-    text-overflow: ellipsis;
     transition: 150ms background-color;
     white-space: nowrap;
     -webkit-user-select: none;
@@ -65,6 +63,11 @@ body {
     -webkit-box-align: center;
     -webkit-padding-end: 1ex;
     box-sizing: border-box;
+}
+
+.rule-list .url-column {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .rule-list .text-display,
@@ -112,17 +115,34 @@ body {
           2x);
 }
 
-.dropdown {
+dropdown, [dropdown] {
     position: relative;
-    overflow: hidden;
 }
 
-.dropdown .dropdown-menu {
+.dropdown-menu {
     position: absolute;
     visibility: hidden;
+    opacity: 0;
+    transition: 0s;
+}
+
+.dropdown-menu.open {
+    visibility: visible;
+    opacity: 1;
     transition: 0.4s;
 }
 
-.dropdown .dropdown-menu.open {
-    visibility: visible;
+.dropdown-menu > div {
+    background-color: white;
+    border: 1px solid #d9d9d9;
+    padding: 3px;
+    cursor: pointer;
+}
+
+.dropdown-menu > div:not(:last-child) {
+    border-bottom: 0;
+}
+
+.dropdown-menu > div:hover {
+    background-color: rgb(228, 236, 247);
 }

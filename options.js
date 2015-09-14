@@ -68,12 +68,12 @@ function options($scope, $timeout) {
 function dropdown() {
     return {
         scope: { options: '=', value: '=' },
-        template: '<div class="dropdown">' +
-            '<button ng-click="toggle()">{{options[value]}}</button>' +
-            '<div class="dropdown-menu">' +
-            '<div ng-class="dropdownMenu"' +
-            'ng-repeat="(val, name) in options" ng-click="click(val)">' +
-            '{{name}}</div></div></div>',
+        template: [
+            '<button ng-click="toggle()" ng-blur="blur()"',
+            'ng-class="dropdownMenu">{{options[value]}}</button>',
+            '<div class="dropdown-menu" ng-class="dropdownMenu">',
+            '<div ng-repeat="(val, name) in options" ng-click="click(val)">',
+            '{{name}}</div></div></div>'].join(''),
         controller: function($scope) {
             $scope.dropdownMenu = {open: false};
             $scope.toggle = () => {
@@ -81,6 +81,9 @@ function dropdown() {
             };
             $scope.click = (val) => {
                 $scope.value = val;
+                $scope.dropdownMenu.open = false;
+            };
+            $scope.blur = () => {
                 $scope.dropdownMenu.open = false;
             };
         }
