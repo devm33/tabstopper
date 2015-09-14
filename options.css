@@ -115,8 +115,19 @@ body {
           2x);
 }
 
-dropdown, [dropdown] {
+dropdown {
     position: relative;
+}
+
+dropdown > button {
+    background-color: white;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    outline: 0;
+}
+
+dropdown > button:focus {
+    background-color: aliceblue;
 }
 
 .dropdown-menu {
