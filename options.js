@@ -67,6 +67,7 @@ function options($scope, $timeout) {
 
 function dropdown() {
     return {
+        restrict: 'E',
         scope: { options: '=', value: '=' },
         template: [
             '<button ng-click="toggle()" ng-blur="blur()"',
