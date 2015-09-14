@@ -35,54 +35,16 @@
                 <button class="row-delete-button" tabindex="0"
                     title="Delete this item"></button>
             </div>
-
+            <div class="listitem disabled" role="listitem">
+                <div class="col url-column">
+                    <input tabindex="-1" ng-model="rule.url"
+                    placeholder="Add a new rule for urls to match">
+                </div>
+                <div class="col match-column">
+                    <dropdown options="matchCopy" value="rule.match"></dropdown>
+                </div>
+            </div>
         </div>
-        <table class="table table-bordered">
-            <thead>
-                <td>The urls contain</td>
-                <td>and they match each other</td>
-            </thead>
-            <tr ng-repeat="(url, match) in rules track by url"
-                ng-class="{active:editing(url)}">
-                <td>{{url}}</td>
-                <td>{{matchCopy[match]}}</td>
-                <td>
-                    <div class="dont-wrap-btn-group btn-group">
-                        <button class="btn btn-default"
-                            ng-click="editRule(url, match)">Edit</button>
-                        <button class="btn btn-danger"
-                            ng-click="deleteRule(url)">&times;</button>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input required type="text" class="form-control"
-                    ng-model="rule.url"/>
-                </td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle"
-                            data-toggle="dropdown">
-                            {{matchCopy[rule.match]}}
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li ng-repeat="(match,copy) in matchCopy">
-                                <a href ng-click="rule.match = match">
-                                    {{copy}}
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </td>
-                <td>
-                    <button class="btn btn-primary"
-                        ng-class="{disabled:!rule.url}"
-                        ng-click="saveRule(rule.url, rule.match)">Save</button>
-                </td>
-            </tr>
-        </table>
 
         <h4>Other settings</h4>
         <div class="checkbox">
@@ -100,4 +62,3 @@
         <script src="options.js"></script>
     </body>
 </html>
-
