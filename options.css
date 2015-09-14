@@ -50,6 +50,7 @@ body {
     position: relative;
     text-overflow: ellipsis;
     transition: 150ms background-color;
+    white-space: nowrap;
     -webkit-user-select: none;
 }
 
@@ -60,6 +61,16 @@ body {
 .rule-list .col {
     box-sizing: border-box;
     width: 50%;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-padding-end: 1ex;
+    box-sizing: border-box;
+}
+
+.rule-list .text-display,
+.rule-list input {
+    width: 100%;
+    padding: 3px;
 }
 
 .list .row-delete-button {
@@ -77,7 +88,8 @@ body {
 }
 
 .list > .listitem:not(:hover):not(.selected) .row-delete-button,
-.list > .listitem.disabled .row-delete-button {
+.list > .listitem.disabled .row-delete-button,
+.list > .listitem .row-delete-button.disabled {
   opacity: 0;
   pointer-events: none;
 }

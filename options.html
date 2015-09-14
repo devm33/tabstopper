@@ -18,24 +18,27 @@
                     The urls contain
                 </div>
                 <div class="col match-column">
-                    and they match each other's urls
+                    And they match each other's urls
                 </div>
-                <button class="row-delete-button" tabindex="0"
-                    title="Delete this item"></button>
+                <div class="row-delete-button"></div>
             </div>
             <div class="listitem" role="listitem"
                 ng-repeat="(url, match) in rules track by url"
                 ng-class="{selected: selected == url}">
                 <div class="col url-column">
-                    {{url}}
+                    <div class="text-display">
+                        {{url}}
+                    </div>
                 </div>
                 <div class="col match-column">
-                    {{matchCopy[match]}}
+                    <div class="text-display">
+                        {{matchCopy[match]}}
+                    </div>
                 </div>
                 <button class="row-delete-button" tabindex="0"
                     title="Delete this item"></button>
             </div>
-            <div class="listitem disabled" role="listitem">
+            <div class="listitem" role="listitem">
                 <div class="col url-column">
                     <input tabindex="-1" ng-model="rule.url"
                     placeholder="Add a new rule for urls to match">
@@ -43,6 +46,7 @@
                 <div class="col match-column">
                     <dropdown options="matchCopy" value="rule.match"></dropdown>
                 </div>
+                <div class="disabled row-delete-button"></div>
             </div>
         </div>
 
