@@ -70,7 +70,8 @@ function dropdown() {
         scope: { options: '=', value: '=' },
         template: [
             '<button ng-click="toggle()" ng-blur="blur()"',
-            'ng-class="dropdownMenu">{{options[value]}}</button>',
+            'ng-class="dropdownMenu">{{options[value]}}',
+            '<span class="caret"></button>',
             '<div class="dropdown-menu" ng-class="dropdownMenu">',
             '<div ng-repeat="(val, name) in options" ng-click="click(val)">',
             '{{name}}</div></div></div>'].join(''),
