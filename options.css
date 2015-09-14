@@ -133,6 +133,7 @@ dropdown > button:focus {
 .dropdown-menu {
     position: absolute;
     visibility: hidden;
+    width: 100%;
     opacity: 0;
     transition: 0s;
 }
@@ -152,6 +153,10 @@ dropdown > button:focus {
 
 .dropdown-menu > div:not(:last-child) {
     border-bottom: 0;
+}
+
+.dropdown-menu > div:last-child {
+    border-radius: 0 0 2px 2px;
 }
 
 .dropdown-menu > div:hover {
