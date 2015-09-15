@@ -11,9 +11,10 @@
         <div ng-if="exacts.length">
             <h5>{{pluralizeMsg(exacts.length)}} exactly matching</h5>
             <ul>
+                <li>{{ellipsis(currentTab.title, 30)}} (current: {{currentTab.index}})</li>
                 <li ng-repeat="tab in exacts track by tab.id">
                     <a href ng-click="goto(tab)">
-                        {{tab.title}} ({{tab.index}})
+                        {{ellipsis(tab.title, 30)}} ({{tab.index}})
                     </a>
                 </li>
             </ul>
@@ -23,9 +24,14 @@
             <h5>{{pluralizeMsg(matchesExceptHash.length)}} matching the current
                 url except for the #hash value</h5>
             <ul>
+                <li>
+                    {{ellipsis(afterDelim(currentTab.url, '#', 'hash'), 15)}}
+                    (current: {{currentTab.index}})
+                </li>
                 <li ng-repeat="tab in matchesExceptHash track by tab.id">
                     <a href ng-click="goto(tab)">
-                        #{{tab.url.split('#')[1]}} ({{tab.index}})
+                        {{ellipsis(afterDelim(tab.url, '#', 'hash'), 15)}}
+                        ({{tab.index}})
                     </a>
                 </li>
             </ul>
@@ -35,10 +41,13 @@
             <h5>{{pluralizeMsg(matchesOnlyBase.length)}} matching up to the ?
             </h5>
             <ul>
+                <li>
+                    {{ellipsis(afterDelim(currentTab.url, '?'), 15)}}
+                    (current: {{currentTab.index}})
+                </li>
                 <li ng-repeat="tab in matchesOnlyBase track by tab.id">
                     <a href ng-click="goto(tab)">
-                        {{(tab.url.split('?')[1]||'no params')|limitTo:15}}{{
-                        tab.url.split('?')[1].length > 15 ? '...':''}}
+                        {{ellipsis(afterDelim(tab.url, '?'), 15)}}
                         ({{tab.index}})
                     </a>
                 </li>
