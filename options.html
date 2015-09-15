@@ -40,11 +40,19 @@
             </div>
             <div class="listitem" role="listitem">
                 <div class="col url-column">
-                    <input tabindex="-1" ng-model="rule.url"
-                    placeholder="Add a new rule for urls to match">
+                    <input tabindex="-1" ng-model="newRule.url"
+                    placeholder="Add a new url part to match">
                 </div>
                 <div class="col match-column">
-                    <dropdown options="matchCopy" value="rule.match"></dropdown>
+                    <div class="col">
+                        <dropdown options="matchCopy" value="newRule.match">
+                        </dropdown>
+                    </div>
+                    <div class="col">
+                        <button class="custom-btn" ng-click="addRule">
+                            Add rule
+                        </button>
+                    </div>
                 </div>
                 <div class="disabled row-delete-button"></div>
             </div>

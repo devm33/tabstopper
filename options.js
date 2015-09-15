@@ -15,7 +15,7 @@ function options($scope, $timeout) {
         if(!dontDisplaySaved) {
             displaySaved();
         }
-        $scope.rule = {match: 'hash'};
+        $scope.newRule = {match: 'hash'};
         loadRules((rules) => {
             $scope.rules = rules;
             $scope.$apply();
@@ -28,6 +28,8 @@ function options($scope, $timeout) {
             saveRules($scope.rules, reloadRules);
         }
     };
+
+    $scope.saveRules = () => saveRules($scope.rules, reloadRules);
 
     $scope.deleteRule = (url) => {
         delete $scope.rules[url];
@@ -71,7 +73,7 @@ function dropdown() {
         scope: { options: '=', value: '=' },
         template: [
             '<button ng-click="toggle()" ng-blur="blur()"',
-            'ng-class="dropdownMenu">{{options[value]}}',
+            'class="custom-btn" ng-class="dropdownMenu">{{options[value]}}',
             '<span class="caret"></button>',
             '<div class="dropdown-menu" ng-class="dropdownMenu">',
             '<div ng-repeat="(val, name) in options" ng-click="click(val)">',
