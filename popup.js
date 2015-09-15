@@ -79,12 +79,12 @@ function popup($scope) {
         return '';
     };
 
-    $scope.afterDelim = (str, delim) => {
+    $scope.afterDelim = (str, delim, emptyMsg) => {
         var split = str.split(delim);
         if(split.length > 1) {
-            return split[1];
+            return delim + split[1];
         }
-        return '';
+        return emptyMsg || '';
     };
 
     $scope.ellipsis = (str, lim) => {
