@@ -72,23 +72,24 @@ function dropdown() {
         restrict: 'E',
         scope: { options: '=', value: '=' },
         template: [
-            '<button ng-click="toggle()" ng-blur="blur()"',
-            'class="custom-btn" ng-class="dropdownMenu">{{options[value]}}',
+            '<button ng-click="ctrl.toggle()" ng-blur="ctrl.blur()"',
+            'class="custom-btn" ng-class="ctrl.dropdownMenu">{{options[value]}}',
             '<span class="caret"></button>',
-            '<div class="dropdown-menu" ng-class="dropdownMenu">',
-            '<div ng-repeat="(val, name) in options" ng-click="click(val)">',
+            '<div class="dropdown-menu" ng-class="ctrl.dropdownMenu">',
+            '<div ng-repeat="(val, name) in options" ng-mousedown="ctrl.click(val)">',
             '{{name}}</div></div></div>'].join(''),
+        controllerAs: 'ctrl',
         controller: function($scope) {
-            $scope.dropdownMenu = {open: false};
-            $scope.toggle = () => {
-                $scope.dropdownMenu.open = !$scope.dropdownMenu.open;
+            this.dropdownMenu = {open: false};
+            this.toggle = () => {
+                this.dropdownMenu.open = !this.dropdownMenu.open;
             };
-            $scope.click = (val) => {
+            this.click = (val) => {
                 $scope.value = val;
-                $scope.dropdownMenu.open = false;
+                this.dropdownMenu.open = false;
             };
-            $scope.blur = () => {
-                $scope.dropdownMenu.open = false;
+            this.blur = () => {
+                this.dropdownMenu.open = false;
             };
         }
     };
