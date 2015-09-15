@@ -52,16 +52,6 @@ function popup($scope) {
         chrome.windows.update(tab.windowId, {focused:true});
     };
 
-    $scope.pluralizeMsg = (count) => {
-        if(count == 1) {
-            return 'There is one other tab';
-        }
-        if(count > 1) {
-            return 'There are ' + count + ' tabs';
-        }
-        return '';
-    };
-
     $scope.saveRule = () => {
         loadRules((rules) => {
             if($scope.savedRule) {
@@ -76,5 +66,31 @@ function popup($scope) {
 
     $scope.showOptions = () => {
         chrome.runtime.openOptionsPage();
+    };
+
+    // TODO these (all below) could be filters
+    $scope.pluralizeMsg = (count) => {
+        if(count == 1) {
+            return 'There is one other tab';
+        }
+        if(count > 1) {
+            return 'There are ' + count + ' tabs';
+        }
+        return '';
+    };
+
+    $scope.afterDelim = (str, delim) => {
+        var split = str.split(delim);
+        if(split.length > 1) {
+            return split[1];
+        }
+        return '';
+    };
+
+    $scope.ellipsis = (str, lim) => {
+        if(str.length > lim) {
+            return str.substr(0, lim) + '...';
+        }
+        return str;
     };
 }
