@@ -133,7 +133,6 @@ dropdown {
 .dropdown-menu {
     position: absolute;
     visibility: hidden;
-    width: 100%;
     opacity: 0;
     transition: 0s;
 }
@@ -147,7 +146,7 @@ dropdown {
 .dropdown-menu > div {
     background-color: white;
     border: 1px solid #d9d9d9;
-    padding: 3px;
+    padding: 2px 5px;
     cursor: pointer;
 }
 
