@@ -2,16 +2,15 @@
 angular.module('popup', []).controller('popup', popup);
 
 function popup($scope) {
-    var currentTab;
     chrome.tabs.query({active: true, currentWindow: true}, (currentTabs) => {
-        currentTab = currentTabs[0];
-        var urlWithoutHash = currentTab.url.split('#')[0];
+        $scope.currentTab = currentTabs[0];
+        var urlWithoutHash = $scope.currentTab.url.split('#')[0];
         var baseUrl = urlWithoutHash.split('?')[0];
 
         chrome.tabs.query({ url: baseUrl + '*' }, (tabs) => {
             $scope.tabs = tabs;
-            var matches = _.reject(tabs, {id: currentTab.id});
-            $scope.exacts = _.filter(matches, {url: currentTab.url});
+            var matches = _.reject(tabs, {id: $scope.currentTab.id});
+            $scope.exacts = _.filter(matches, {url: $scope.currentTab.url});
             var matchesWithoutHash = _.filter(matches, (tab) =>
                 tab.url.split('#')[0] === urlWithoutHash
             );
@@ -47,7 +46,7 @@ function popup($scope) {
 
     $scope.goto = (tab) => {
         if($scope.closeTab) {
-            chrome.tabs.remove(currentTab.id);
+            chrome.tabs.remove($scope.currentTab.id);
         }
         chrome.tabs.update(tab.id, {active:true});
         chrome.windows.update(tab.windowId, {focused:true});
