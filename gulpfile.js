@@ -25,16 +25,18 @@ var d = require('gulp-debug');
 
 gulp.task('lib', () => merge(
     gulp.src('src/templates/*.html', base)
-    .pipe(d())
+    .pipe(d({title:'should have zero'}))
     .pipe($.angularTemplatecache()),
     gulp.src('src/common/*.js')
     .pipe(d({title:'should have common'}))
     .pipe($.ngAnnotate())
     .pipe($.uglify()),
     gulp.src(['src/bower/angular/angular.min.js',
-                   'src/bower/lodash/lodash.min.js'])
+                   'src/bower/lodash/lodash.min.js']))
+    .pipe(d({title:'should have bower deps'}))
     .pipe($.concat('lib.js'))
-    .pipe(gulp.dest(dest))));
+    .pipe(d({title:'should have lib.js'}))
+    .pipe(gulp.dest(dest)));
 
 gulp.task('default', ['copy', 'html', 'js', 'lib']);
 
