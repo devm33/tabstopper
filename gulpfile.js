@@ -21,12 +21,11 @@ gulp.task('js', () => gulp.src('src/*.js', base)
 
 gulp.task('lib', () => gulp.src('src/templates/*.html', base)
     .pipe($.angularTemplatecache())
-    .pipe(gulp.src([
-        'src/common/*.js',
-        'src/bower/angular/angular.min.js',
-        'src/bower/lodash/lodash.min.js']))
+    .pipe(gulp.src('src/common/*.js'))
     .pipe($.ngAnnotate())
     .pipe($.uglify())
+    .pipe(gulp.src(['src/bower/angular/angular.min.js',
+                   'src/bower/lodash/lodash.min.js']))
     .pipe($.concat('lib.js'))
     .pipe(gulp.dest(dest)));
 
