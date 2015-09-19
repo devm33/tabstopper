@@ -1,6 +1,7 @@
 /*jshint node:true*/
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
+var merge = require('merge-stream');
 var dest = 'extension';
 var base = {base: 'src/'};
 
@@ -19,15 +20,21 @@ gulp.task('js', () => gulp.src('src/*.js', base)
     .pipe($.uglify())
     .pipe(gulp.dest(dest)));
 
-gulp.task('lib', () => gulp.src('src/templates/*.html', base)
-    .pipe($.angularTemplatecache())
-    .pipe(gulp.src('src/common/*.js'))
+
+var d = require('gulp-debug');
+
+gulp.task('lib', () => merge(
+    gulp.src('src/templates/*.html', base)
+    .pipe(d())
+    .pipe($.angularTemplatecache()),
+    gulp.src('src/common/*.js')
+    .pipe(d({title:'should have common'}))
     .pipe($.ngAnnotate())
-    .pipe($.uglify())
-    .pipe(gulp.src(['src/bower/angular/angular.min.js',
-                   'src/bower/lodash/lodash.min.js']))
+    .pipe($.uglify()),
+    gulp.src(['src/bower/angular/angular.min.js',
+                   'src/bower/lodash/lodash.min.js'])
     .pipe($.concat('lib.js'))
-    .pipe(gulp.dest(dest)));
+    .pipe(gulp.dest(dest))));
 
 gulp.task('default', ['copy', 'html', 'js', 'lib']);
 
