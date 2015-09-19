@@ -49,9 +49,8 @@
                         </dropdown>
                     </div>
                     <div class="col">
-                        <button class="custom-btn" ng-click="addRule()">
-                            Add rule
-                        </button>
+                        <button class="custom-btn" ng-click="addRule()"
+                            ng-disabled="!newRule.url">Add rule</button>
                     </div>
                 </div>
                 <div class="disabled row-delete-button"></div>
