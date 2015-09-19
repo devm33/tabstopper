@@ -1,0 +1,26 @@
+{
+  "name": "tabstopper",
+  "version": "0.0.0",
+  "description": "chrome extension to stop you from opening the same content across multiple tabs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devm33/tabstopper.git"
+  },
+  "author": "devm33",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/devm33/tabstopper/issues"
+  },
+  "homepage": "https://github.com/devm33/tabstopper#readme",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-angular-templatecache": "^1.7.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-html-replace": "^1.5.3",
+    "gulp-load-plugins": "^0.10.0",
+    "gulp-uglify": "^1.4.1"
+  }
+}
