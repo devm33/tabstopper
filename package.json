@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "description": "chrome extension to stop you from opening the same content across multiple tabs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "bower i && gulp"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
     "gulp-concat": "^2.6.0",
     "gulp-html-replace": "^1.5.3",
     "gulp-load-plugins": "^0.10.0",
+    "gulp-ng-annotate": "^1.1.0",
     "gulp-uglify": "^1.4.1"
   }
 }
