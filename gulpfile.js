@@ -30,3 +30,5 @@ gulp.task('lib', () => gulp.src('src/templates/*.html', base)
     .pipe(gulp.dest(dest)));
 
 gulp.task('default', ['copy', 'html', 'js', 'lib']);
+
+gulp.task('clean', () => require('del')(dest));
