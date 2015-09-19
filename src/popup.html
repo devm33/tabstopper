@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="bower/bootstrap/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="popup.css">
     </head>
     <body ng-app="popup" ng-controller="popup" class="container">
@@ -102,9 +102,12 @@
         </div>
 
 
-        <script src="bower_components/angular/angular.min.js"></script>
-        <script src="bower_components/lodash/lodash.min.js"></script>
-        <script src="rules.js"></script>
+        <!-- build:js -->
+        <script src="bower/angular/angular.min.js"></script>
+        <script src="bower/lodash/lodash.min.js"></script>
+        <script src="common/rules.js"></script>
+        <!-- endbuild -->
+
         <script src="popup.js"></script>
     </body>
 </html>
