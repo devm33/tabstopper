@@ -17,12 +17,14 @@
   },
   "homepage": "https://github.com/devm33/tabstopper#readme",
   "devDependencies": {
+    "del": "^2.0.2",
     "gulp": "^3.9.0",
     "gulp-angular-templatecache": "^1.7.0",
     "gulp-concat": "^2.6.0",
     "gulp-html-replace": "^1.5.3",
     "gulp-load-plugins": "^0.10.0",
     "gulp-ng-annotate": "^1.1.0",
-    "gulp-uglify": "^1.4.1"
+    "gulp-uglify": "^1.4.1",
+    "merge-stream": "^1.0.0"
   }
 }
