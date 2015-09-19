@@ -29,3 +29,5 @@ gulp.task('lib', () => gulp.src('src/templates/*.html', base)
     .pipe($.uglify())
     .pipe($.concat('lib.js'))
     .pipe(gulp.dest(dest)));
+
+gulp.task('default', ['copy', 'html', 'js', 'lib']);
