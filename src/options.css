@@ -57,12 +57,10 @@ body {
 }
 
 .rule-list .col {
-    box-sizing: border-box;
     width: 50%;
     display: flex;
     -webkit-box-align: center;
     -webkit-padding-end: 1ex;
-    box-sizing: border-box;
 }
 
 .rule-list .url-column {
