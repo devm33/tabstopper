@@ -7,7 +7,7 @@ var base = {base: 'src/'};
 
 gulp.task('copy', () => gulp.src([
     'src/manifest.json',
-    'src/icon_128.jpg',
+    'src/icon_128.png',
     'src/*.css'], base)
     .pipe(gulp.dest(dest)));
 
