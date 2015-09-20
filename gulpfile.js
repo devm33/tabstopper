@@ -23,6 +23,9 @@ gulp.task('js', () => gulp.src('src/*.js', base)
     .pipe($.uglify())
     .pipe(gulp.dest(dest)));
 
+
+var d = require('gulp-debug');
+
 gulp.task('lib', () => merge(
     gulp.src(['src/bower/angular/angular.min.js',
              'src/bower/lodash/lodash.min.js']),
@@ -34,7 +37,9 @@ gulp.task('lib', () => merge(
     .pipe($.babel())
     .pipe($.ngAnnotate()))
     .pipe($.plumber())
+    .pipe(d({title:'before', minimal: false}))
     .pipe($.order(['bower/*', '**/*']))
+    .pipe(d({title:'after', minimal:false}))
     .pipe($.concat('lib.js'))
     .pipe($.uglify())
     .pipe(gulp.dest(dest)));
