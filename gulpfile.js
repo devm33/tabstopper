@@ -1,7 +1,7 @@
 /*jshint node:true*/
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
-var merge = require('merge-stream');
+var series = require('stream-series');
 var dest = 'extension';
 var base = {base: 'src/'};
 
@@ -23,23 +23,17 @@ gulp.task('js', () => gulp.src('src/*.js', base)
     .pipe($.uglify())
     .pipe(gulp.dest(dest)));
 
-
-var d = require('gulp-debug');
-
-gulp.task('lib', () => merge(
+gulp.task('lib', () => series(
     gulp.src(['src/bower/angular/angular.min.js',
-             'src/bower/lodash/lodash.min.js']),
+                'src/bower/lodash/lodash.min.js']),
     gulp.src('src/templates/*.html', base)
-    .pipe($.plumber())
-    .pipe($.angularTemplatecache()),
+        .pipe($.plumber())
+        .pipe($.angularTemplatecache()),
     gulp.src('src/common/*.js')
+        .pipe($.plumber())
+        .pipe($.babel())
+        .pipe($.ngAnnotate()))
     .pipe($.plumber())
-    .pipe($.babel())
-    .pipe($.ngAnnotate()))
-    .pipe($.plumber())
-    .pipe(d({title:'before', minimal: false}))
-    .pipe($.order(['bower/*', '**/*']))
-    .pipe(d({title:'after', minimal:false}))
     .pipe($.concat('lib.js'))
     .pipe($.uglify())
     .pipe(gulp.dest(dest)));
