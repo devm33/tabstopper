@@ -1,5 +1,3 @@
-var d = require('gulp-debug');
-
 /*jshint node:true*/
 var gulp = require('gulp');
 
@@ -26,31 +24,13 @@ gulp.task('html', () => gulp.src('src/*.html', base)
 
 var js = lazypipe()
     .pipe($.plumber)
-    // .pipe(d, {title: 'js'})
     .pipe($.babel)
     .pipe($.ngAnnotate)
     .pipe($.uglify);
 
 var bower = lazypipe()
-    .pipe($.plumber);
-    // .pipe(d, {title: 'bower'});
-    // .pipe($.uglify, {compress: false});
-
-/*
-var templates = lazypipe()
-    .pipe(d, {title: 'templates'})
     .pipe($.plumber)
-    .pipe($.htmlmin)
-    .pipe($.angularTemplatecache);
-
-var addTemplates = lazypipe()
-    .pipe($.plumber)
-    .pipe(d, {title: 'add templates before'})
-    .pipe($.addSrc, 'src/common/* * / *.html')
-    .pipe(d, {title: 'add templates after'})
-    .pipe(() => $.if(/html$/, templates()))
-    .pipe(d, {title: 'should be templates and angular'});
-*/
+    .pipe($.uglify, {compress: false});
 
 var addTemplatesIfAngular = () => {
     return through(write);
@@ -60,15 +40,11 @@ var addTemplatesIfAngular = () => {
             return this.queue(file);
         }
         if(/angular/.test(file.path)) {
-            console.log('angular detected!');
-            // console.log(this);
             this.pause();
             gulp.src('src/common/**/*.html')
-                .pipe(d({title:'templates'}))
                 .pipe($.plumber())
                 .pipe($.htmlmin())
                 .pipe($.angularTemplatecache())
-                .pipe(d({title:'should be templates.js'}))
                 .pipe($.util.buffer((err, files) => {
                     files.forEach((file) => {
                         this.queue(file);
@@ -80,8 +56,7 @@ var addTemplatesIfAngular = () => {
     }
 };
 
-
-gulp.task('js', (done) => glob('src/popup.html', (err, files) => {
+gulp.task('js', (done) => glob('src/*.html', (err, files) => {
     if(err) {
         done(err);
     }
@@ -91,7 +66,6 @@ gulp.task('js', (done) => glob('src/popup.html', (err, files) => {
         .pipe($.plumber())
         .pipe($.if(/bower/, bower(), js()))
         .pipe(addTemplatesIfAngular())
-        .pipe(d({title:'concatenating for '+file}))
         .pipe($.concat(file))
         .pipe($.rename({dirname:'', extname:'.js'}))
         .pipe(gulp.dest(dest))))
