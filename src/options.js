@@ -1,4 +1,4 @@
-/*global loadRules,saveRules,loadCloseSetting,saveCloseSetting*/
+/*global settings*/
 angular.module('options', [])
     .controller('options', options)
     .directive('dropdown', dropdown);
@@ -16,7 +16,7 @@ function options($scope, $timeout) {
             displaySaved();
         }
         $scope.newRule = {match: 'hash'};
-        loadRules((rules) => {
+        settings.loadRules((rules) => {
             $scope.rules = rules;
             $scope.$apply();
         });
@@ -25,22 +25,22 @@ function options($scope, $timeout) {
     $scope.addRule = () => {
         if($scope.newRule.url) {
             $scope.rules[$scope.newRule.url] = $scope.newRule.match;
-            saveRules($scope.rules, reloadRules);
+            settings.saveRules($scope.rules, reloadRules);
         }
     };
 
-    $scope.saveRules = () => saveRules($scope.rules, reloadRules);
+    $scope.saveRules = () => settings.saveRules($scope.rules, reloadRules);
 
     $scope.deleteRule = (url) => {
         delete $scope.rules[url];
-        saveRules($scope.rules, reloadRules);
+        settings.saveRules($scope.rules, reloadRules);
     };
 
     $scope.select = (url) => $scope.selected = url;
     reloadRules(true);
 
     /* Other settings */
-    loadCloseSetting((close) => {
+    settings.loadCloseSetting((close) => {
         $scope.close = close;
         $scope.$apply();
         watchClose();
@@ -52,7 +52,7 @@ function options($scope, $timeout) {
             if(ignoreFirst) {
                 ignoreFirst = false;
             } else {
-                saveCloseSetting(close, displaySaved);
+                settings.saveCloseSetting(close, displaySaved);
             }
         });
     }

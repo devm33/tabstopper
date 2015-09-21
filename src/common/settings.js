@@ -1,19 +1,22 @@
 /*jshint unused:false*/
-function loadRules(callback) {
+var settings = {};
+/*jshint unused:true*/
+
+settings.loadRules = (callback) => {
     chrome.storage.sync.get('rules', (storage) => {
         if(!storage.rules) {
             storage.rules = {};
         }
         callback(storage.rules);
     });
-}
+};
 
-function saveRules(rules, callback) {
+settings.saveRules = (rules, callback) => {
     chrome.storage.sync.set({rules: rules}, callback);
-}
+};
 
-function matchRule(baseUrl, callback) {
-    loadRules((rules) => {
+settings.matchRule = (baseUrl, callback) => {
+    settings.loadRules((rules) => {
         var match = _(rules)
             .pairs()
             .filter((rule) => baseUrl.indexOf(rule[0]) > -1)
@@ -34,12 +37,13 @@ function matchRule(baseUrl, callback) {
             callback();
         }
     });
-}
+};
 
-function loadCloseSetting(callback) {
+settings.loadCloseSetting = (callback) => {
     chrome.storage.sync.get('close', (storage) => callback(storage.close));
-}
+};
 
-function saveCloseSetting(close, callback) {
+settings.saveCloseSetting = (close, callback) => {
     chrome.storage.sync.set({close: close}, callback);
-}
+};
+

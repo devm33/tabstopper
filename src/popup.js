@@ -1,4 +1,4 @@
-/*global matchRule,loadRules,saveRules,loadCloseSetting*/
+/*global settings*/
 angular.module('popup', []).controller('popup', popup);
 
 function popup($scope) {
@@ -27,7 +27,7 @@ function popup($scope) {
             $scope.rule.match = 'hash';
             $scope.$apply();
 
-            matchRule(baseUrl, (rule) => {
+            settings.matchRule(baseUrl, (rule) => {
                 if(rule) {
                     $scope.rule = rule;
                     $scope.savedRule = _.clone(rule);
@@ -39,7 +39,7 @@ function popup($scope) {
         });
     });
 
-    loadCloseSetting((close) => {
+    settings.loadCloseSetting((close) => {
         $scope.closeTab = close;
         $scope.$apply();
     });
@@ -53,12 +53,12 @@ function popup($scope) {
     };
 
     $scope.saveRule = () => {
-        loadRules((rules) => {
+        settings.loadRules((rules) => {
             if($scope.savedRule) {
                 delete rules[$scope.savedRule.url];
             }
             rules[$scope.rule.url] = $scope.rule.match;
-            saveRules(rules);
+            settings.saveRules(rules);
             $scope.savedRule = _.clone($scope.rule);
             $scope.$apply();
         });

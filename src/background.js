@@ -1,4 +1,4 @@
-/*global matchRule*/
+/*global settings*/
 chrome.runtime.onInstalled.addListener(updateAllTabs);
 chrome.tabs.onUpdated.addListener(updateAllTabs);
 chrome.tabs.onRemoved.addListener(updateAllTabs);
@@ -17,7 +17,7 @@ function updateAllTabs() {
 }
 
 function checkGroup(tabs, baseUrl) {
-    matchRule(baseUrl, (rule) => {
+    settings.matchRule(baseUrl, (rule) => {
         if(rule) {
             var originalTabs = _(tabs).map('id').sortBy('index').value();
             _.each(originalTabs, (id) => {
