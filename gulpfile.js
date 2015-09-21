@@ -14,6 +14,7 @@ gulp.task('copy', () => gulp.src([
 gulp.task('html', () => gulp.src('src/*.html', base)
     .pipe($.plumber())
     .pipe($.htmlReplace({js: 'lib.js'}))
+    .pipe($.htmlmin())
     .pipe(gulp.dest(dest)));
 
 gulp.task('js', () => gulp.src('src/*.js', base)
@@ -28,6 +29,7 @@ gulp.task('lib', () => series(
                 'src/bower/lodash/lodash.min.js']),
     gulp.src('src/templates/*.html', base)
         .pipe($.plumber())
+        .pipe($.htmlmin())
         .pipe($.angularTemplatecache()),
     gulp.src('src/common/*.js')
         .pipe($.plumber())
