@@ -44,7 +44,7 @@ var addTemplatesIfAngular = () => {
             gulp.src('src/common/**/*.html')
                 .pipe($.plumber())
                 .pipe($.htmlmin())
-                .pipe($.angularTemplatecache())
+                .pipe($.angularTemplatecache({standalone: true}))
                 .pipe($.util.buffer((err, files) => {
                     files.forEach((file) => {
                         this.queue(file);
