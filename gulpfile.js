@@ -4,11 +4,12 @@ var d = require('gulp-debug');
 var gulp = require('gulp');
 
 var $ = require('gulp-load-plugins')();
-var base = {base: 'src/'};
-var dest = 'extension';
+var es = require('event-stream');
 var glob = require('glob');
 var lazypipe = require('lazypipe');
-var merge = require('merge-stream');
+
+var base = {base: 'src/'};
+var dest = 'extension';
 
 gulp.task('copy', () => gulp.src([
     'src/manifest.json',
@@ -31,14 +32,13 @@ var js = lazypipe()
 
 var bower = lazypipe()
     .pipe($.plumber)
-    .pipe(d, {title: 'bower'})
-    .pipe($.uglify, {compress: false});
+    .pipe(d, {title: 'bower'});
+    // .pipe($.uglify, {compress: false});
 
 var templates = lazypipe()
     .pipe($.plumber)
     .pipe($.htmlmin)
     .pipe($.angularTemplatecache);
-
 
 var addTemplates = lazypipe()
     .pipe($.plumber)
@@ -47,21 +47,21 @@ var addTemplates = lazypipe()
     .pipe(d, {title: 'after'})
     .pipe(() => $.if('html$', templates()));
 
-gulp.task('js', (done) => glob('src/*.html', (err, files) => {
+gulp.task('js', (done) => glob('src/background.html', (err, files) => {
     if(err) {
         done(err);
     }
-    merge(files.map((file) => $.domSrc({
+    es.merge(files.map((file) => $.domSrc({
         file:file, selector:'script', attribute: 'src', cwd: 'src/'
     })
         .pipe($.plumber())
         .pipe($.if(/bower/, bower(), js()))
-        // .pipe($.if('src/bower/angular', addTemplates()))
+        .pipe($.if(/angular/, addTemplates()))
         .pipe(d({title:'before concat '+file}))
         .pipe($.concat(file))
         .pipe($.rename({dirname:'', extname:'.js'}))
         .pipe(gulp.dest(dest))))
-    .on('end', done);
+    .pipe(es.wait(() => done()));
 }));
 
 gulp.task('default', ['copy', 'html', 'js']);

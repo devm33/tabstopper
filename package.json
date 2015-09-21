@@ -18,6 +18,7 @@
   "homepage": "https://github.com/devm33/tabstopper#readme",
   "devDependencies": {
     "del": "^2.0.2",
+    "event-stream": "^3.3.1",
     "glob": "^5.0.14",
     "gulp": "^3.9.0",
     "gulp-add-src": "^0.2.0",
@@ -33,7 +34,6 @@
     "gulp-plumber": "^1.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.4.1",
-    "lazypipe": "^1.0.1",
-    "merge-stream": "^1.0.0"
+    "lazypipe": "^1.0.1"
   }
 }
