@@ -1,3 +1,4 @@
+var d = require('gulp-debug');
 /*jshint node:true*/
 var gulp = require('gulp');
 
@@ -41,8 +42,9 @@ var addTemplatesIfAngular = () => {
         }
         if(/angular/.test(file.path)) {
             this.pause();
-            gulp.src('src/common/**/*.html')
+            gulp.src('src/common/**/*.html', base)
                 .pipe($.plumber())
+                .pipe(d({title:'from templates src', minimal:false}))
                 .pipe($.htmlmin())
                 .pipe($.angularTemplatecache({standalone: true}))
                 .pipe($.util.buffer((err, files) => {
