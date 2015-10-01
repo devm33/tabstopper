@@ -33,14 +33,14 @@ var bower = lazypipe()
 
 gulp.task('js', () => gulp.src('src/*.html')
     .pipe(es.map((file, cb) => {
-        $.domSrc.duplex({selector:'script', attribute: 'src', cwd: 'src/'})
+        es.readArray([file])
+            .pipe($.domSrc.duplex({selector:'script', attribute: 'src', cwd: 'src/'}))
             .pipe($.plumber())
             .pipe($.if(/bower/, bower(), js()))
             .pipe($.ngTemplateStrings({cwd: 'src/'}))
             .pipe($.concat(path.basename(file.path, '.html') + '.js'))
             .pipe(gulp.dest(dest))
-            .on('end', () => cb())
-            .write(file);
+            .on('end', () => cb());
     })));
 
 gulp.task('default', ['copy', 'html', 'js']);
