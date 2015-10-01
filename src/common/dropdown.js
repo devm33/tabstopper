@@ -1,4 +1,4 @@
-angular.module('dropdown', ['templates'])
+angular.module('dropdown', [])
     .directive('dropdown', dropdown);
 
 function dropdown() {
