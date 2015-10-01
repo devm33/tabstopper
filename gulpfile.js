@@ -3,8 +3,8 @@ var gulp = require('gulp');
 
 var $ = require('gulp-load-plugins')();
 var es = require('event-stream');
-var glob = require('glob');
 var lazypipe = require('lazypipe');
+var path = require('path');
 
 var base = {base: 'src/'};
 var dest = 'extension';
@@ -31,21 +31,17 @@ var bower = lazypipe()
     .pipe($.plumber)
     .pipe($.uglify, {compress: false});
 
-gulp.task('js', (done) => glob('src/*.html', (err, files) => {
-    if(err) {
-        done(err);
-    }
-    es.merge(files.map((file) => $.domSrc({
-        file:file, selector:'script', attribute: 'src', cwd: 'src/',
-    })
-        .pipe($.plumber())
-        .pipe($.if(/bower/, bower(), js()))
-        .pipe($.ngTemplateStrings({cwd: 'src/'}))
-        .pipe($.concat(file))
-        .pipe($.rename({dirname:'', extname:'.js'}))
-        .pipe(gulp.dest(dest))))
-    .pipe(es.wait(() => done()));
-}));
+gulp.task('js', () => gulp.src('src/*.html')
+    .pipe(es.map((file, cb) => {
+        $.domSrc.duplex({selector:'script', attribute: 'src', cwd: 'src/'})
+            .pipe($.plumber())
+            .pipe($.if(/bower/, bower(), js()))
+            .pipe($.ngTemplateStrings({cwd: 'src/'}))
+            .pipe($.concat(path.basename(file.path, '.html') + '.js'))
+            .pipe(gulp.dest(dest))
+            .on('end', () => cb())
+            .write(file);
+    })));
 
 gulp.task('default', ['copy', 'html', 'js']);
 
