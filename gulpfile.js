@@ -1,4 +1,3 @@
-var d = require('gulp-debug');
 /*jshint node:true*/
 var gulp = require('gulp');
 
@@ -6,7 +5,6 @@ var $ = require('gulp-load-plugins')();
 var es = require('event-stream');
 var glob = require('glob');
 var lazypipe = require('lazypipe');
-var through = require('through');
 
 var base = {base: 'src/'};
 var dest = 'extension';
@@ -33,41 +31,16 @@ var bower = lazypipe()
     .pipe($.plumber)
     .pipe($.uglify, {compress: false});
 
-var addTemplatesIfAngular = () => {
-    return through(write);
-
-    function write(file) {
-        if(file.isNull()) {
-            return this.queue(file);
-        }
-        if(/angular/.test(file.path)) {
-            this.pause();
-            gulp.src('src/common/**/*.html', base)
-                .pipe($.plumber())
-                .pipe(d({title:'from templates src', minimal:false}))
-                .pipe($.htmlmin())
-                .pipe($.angularTemplatecache({standalone: true}))
-                .pipe($.util.buffer((err, files) => {
-                    files.forEach((file) => {
-                        this.queue(file);
-                    });
-                    this.resume();
-                }));
-        }
-        this.queue(file);
-    }
-};
-
 gulp.task('js', (done) => glob('src/*.html', (err, files) => {
     if(err) {
         done(err);
     }
     es.merge(files.map((file) => $.domSrc({
-        file:file, selector:'script', attribute: 'src', cwd: 'src/'
+        file:file, selector:'script', attribute: 'src', cwd: 'src/',
     })
         .pipe($.plumber())
         .pipe($.if(/bower/, bower(), js()))
-        .pipe(addTemplatesIfAngular())
+        .pipe($.ngTemplateStrings({cwd: 'src/'}))
         .pipe($.concat(file))
         .pipe($.rename({dirname:'', extname:'.js'}))
         .pipe(gulp.dest(dest))))
