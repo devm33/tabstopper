@@ -118,6 +118,7 @@ dropdown {
 }
 
 .dropdown-menu {
+    width: 100%;
     position: absolute;
     visibility: hidden;
     opacity: 0;
