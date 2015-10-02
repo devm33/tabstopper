@@ -5,12 +5,22 @@ angular.module('notification', [])
         templateUrl: 'common/notification/notification.html',
         controller: ($scope, $timeout) => {
             var timeout;
+            var showNotification = () => $scope.show = true;
+            var hideNotification = () => $scope.show = false;
+            var finishTimeout = () => timeout = false;
             $scope.$watch('show', (show) => {
-                if(show && !timeout) {
-                    timeout = $timeout(() => {
+                if(show) {
+                    if(timeout) {
+                        $timeout.cancel(timeout);
                         $scope.show = false;
-                        timeout = false;
-                    }, 3000);
+                        timeout = $timeout(400)
+                            .then(showNotification)
+                            .then(() => $timeout(3000))
+                            .then(hideNotification)
+                            .then(finishTimeout);
+                    } else {
+                        timeout = $timeout(3000).then(hideNotification);
+                    }
                 }
             });
         }
