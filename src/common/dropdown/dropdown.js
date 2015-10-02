@@ -1,11 +1,8 @@
 angular.module('dropdown', [])
-    .directive('dropdown', dropdown);
-
-function dropdown() {
-    return {
+    .directive('dropdown', () => ({
         restrict: 'E',
         scope: { options: '=', value: '=' },
-        templateUrl: 'common/dropdown.html',
+        templateUrl: 'common/dropdown/dropdown.html',
         controllerAs: 'ctrl',
         controller: function($scope) {
             this.dropdownMenu = {open: false};
@@ -20,5 +17,4 @@ function dropdown() {
                 this.dropdownMenu.open = false;
             };
         }
-    };
-}
+    }));
