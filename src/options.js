@@ -1,8 +1,8 @@
 /*global settings*/
-angular.module('options', ['dropdown'])
+angular.module('options', ['dropdown', 'notification'])
     .controller('options', options);
 
-function options($scope, $timeout) {
+function options($scope) {
     /* Rules table */
     $scope.matchCopy = {
         exact: 'exactly',
@@ -59,9 +59,6 @@ function options($scope, $timeout) {
     /* Settings saved notiication */
     function displaySaved() {
         $scope.settingsSaved = true;
-        $timeout(() => {
-            $scope.settingsSaved = false;
-        }, 3000);
         $scope.$apply();
     }
 }
