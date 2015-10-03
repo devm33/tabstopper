@@ -38,6 +38,11 @@ body {
     background-color: rgb(187, 206, 233);
 }
 
+.rule-list .listitem:not(.selected) .selected-display,
+.rule-list .listitem.selected .unselected-display {
+    display: none;
+}
+
 .rule-list .col {
     display: flex;
     justify-content: space-between;

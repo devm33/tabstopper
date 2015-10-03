@@ -23,14 +23,19 @@
                 ng-click="toggleSelect(url)"
                 ng-class="{selected: selected == url}">
                 <div class="col">
-                    <div class="text-display" title="{{url}}">
+                    <div class="unselected-display text-display" title="{{url}}">
                         {{url}}
                     </div>
+                    <input class="selected-display" ng-model="url">
                 </div>
                 <div class="col">
-                    <div class="text-display match-display">
+                    <div class="unselected-display text-display match-display">
                         {{matchCopy[match]}}
                     </div>
+                    <select class="selected-display" ng-model="newRule.match">
+                        <option ng-repeat="(match, copy) in matchCopy"
+                        value="{{match}}">{{copy}}</option>
+                    </select>
                     <div class="row-delete-button" tabindex="0"
                         title="Delete this item"></div>
                 </div>
