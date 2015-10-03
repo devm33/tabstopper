@@ -10,29 +10,28 @@
         <h4>Tabs will be closed when</h4>
         <div class="list rule-list" role="list">
             <div class="listitem disabled" role="listitem">
-                <div class="col url-column">
+                <div class="col">
                     The urls contain
                 </div>
-                <div class="col match-column">
+                <div class="col">
                     And they match each other's urls
                 </div>
-                <div class="row-delete-button"></div>
             </div>
             <div class="listitem" role="listitem"
                 ng-repeat="(url, match) in rules track by url"
                 ng-class="{selected: selected == url}">
-                <div class="col url-column">
-                    <div class="text-display">
+                <div class="col">
+                    <div class="text-display" title="{{url}}">
                         {{url}}
                     </div>
                 </div>
-                <div class="col match-column">
-                    <div class="text-display">
+                <div class="col">
+                    <div class="text-display match-display">
                         {{matchCopy[match]}}
                     </div>
+                    <div class="row-delete-button" tabindex="0"
+                        title="Delete this item"></div>
                 </div>
-                <div class="row-delete-button" tabindex="0"
-                    title="Delete this item"></div>
             </div>
             <div class="listitem" role="listitem">
                 <div class="col">
@@ -44,8 +43,6 @@
                         <option ng-repeat="(match, copy) in matchCopy"
                         value="{{match}}">{{copy}}</option>
                     </select>
-                </div>
-                <div class="col">
                     <button class="custom-btn" ng-click="addRule()"
                         ng-disabled="!newRule.url">Add rule</button>
                 </div>
