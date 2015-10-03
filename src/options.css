@@ -39,6 +39,8 @@ body {
 
 .rule-list .col {
     display: flex;
+    justify-content: space-between;
+    width: 50%;
     -webkit-box-align: center;
     -webkit-padding-end: 1ex;
 }
@@ -52,6 +54,10 @@ body {
 .rule-list input {
     width: 100%;
     padding: 3px;
+}
+
+.rule-list .text-display.match-display {
+    padding: 7px;
 }
 
 .list .row-delete-button {
