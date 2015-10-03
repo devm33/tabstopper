@@ -3,10 +3,6 @@ body {
     max-width: 700px;
 }
 
-.btn-group.dont-wrap-btn-group {
-    display: flex;
-}
-
 .list.rule-list {
     border: 1px solid #d9d9d9;
     border-radius: 2px;
