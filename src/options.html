@@ -20,6 +20,7 @@
             </div>
             <div class="listitem" role="listitem"
                 ng-repeat="(url, match) in rules track by url"
+                ng-click="toggleSelect(url)"
                 ng-class="{selected: selected == url}">
                 <div class="col">
                     <div class="text-display" title="{{url}}">

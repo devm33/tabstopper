@@ -33,6 +33,11 @@ body {
     background-color: rgb(228, 236, 247);
 }
 
+.rule-list .listitem.selected,
+.rule-list .listitem.selected:hover {
+    background-color: rgb(187, 206, 233);
+}
+
 .rule-list .col {
     display: flex;
     justify-content: space-between;

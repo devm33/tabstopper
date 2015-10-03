@@ -39,7 +39,14 @@ function options($scope, notification) {
         settings.saveRules($scope.rules, onSaveRules);
     };
 
-    $scope.select = (url) => $scope.selected = url;
+    $scope.toggleSelect = (url) => {
+        if($scope.selected == url) {
+            $scope.selected = false;
+        } else {
+            $scope.selected = url;
+        }
+    };
+
     reloadRules();
 
     /* Other settings */
