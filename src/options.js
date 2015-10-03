@@ -2,7 +2,7 @@
 angular.module('options', ['notification'])
     .controller('options', options);
 
-function options($scope) {
+function options($scope, notification) {
     /* Rules table */
     $scope.matchCopy = {
         exact: 'exactly',
@@ -10,10 +10,12 @@ function options($scope) {
         hash: 'up to the #'
     };
 
-    function reloadRules(dontDisplaySaved) {
-        if(!dontDisplaySaved) {
-            displaySaved();
-        }
+    function applyNotify() {
+        notification.notify();
+        $scope.$apply();
+    }
+
+    function reloadRules() {
         $scope.newRule = {match: 'hash'};
         settings.loadRules((rules) => {
             $scope.rules = rules;
@@ -21,22 +23,24 @@ function options($scope) {
         });
     }
 
+    var onSaveRules = _.flowRight(reloadRules, applyNotify);
+
     $scope.addRule = () => {
         if($scope.newRule.url) {
             $scope.rules[$scope.newRule.url] = $scope.newRule.match;
-            settings.saveRules($scope.rules, reloadRules);
+            settings.saveRules($scope.rules, onSaveRules);
         }
     };
 
-    $scope.saveRules = () => settings.saveRules($scope.rules, reloadRules);
+    $scope.saveRules = () => settings.saveRules($scope.rules, onSaveRules);
 
     $scope.deleteRule = (url) => {
         delete $scope.rules[url];
-        settings.saveRules($scope.rules, reloadRules);
+        settings.saveRules($scope.rules, onSaveRules);
     };
 
     $scope.select = (url) => $scope.selected = url;
-    reloadRules(true);
+    reloadRules();
 
     /* Other settings */
     settings.loadCloseSetting((close) => {
@@ -51,14 +55,8 @@ function options($scope) {
             if(ignoreFirst) {
                 ignoreFirst = false;
             } else {
-                settings.saveCloseSetting(close, displaySaved);
+                settings.saveCloseSetting(close, applyNotify);
             }
         });
-    }
-
-    /* Settings saved notiication */
-    function displaySaved() {
-        $scope.settingsSaved = true;
-        $scope.$apply();
     }
 }
