@@ -43,6 +43,10 @@ gulp.task('js', () => gulp.src('src/*.html')
             .on('end', () => cb());
     })));
 
-gulp.task('default', ['copy', 'html', 'js']);
+gulp.task('zip', ['copy', 'html', 'js'], () => gulp.src(dest + '/**/*')
+    .pipe($.zip('extension.zip'))
+    .pipe(gulp.dest('./')));
+
+gulp.task('default', ['copy', 'html', 'js', 'zip']);
 
 gulp.task('clean', () => require('del')(dest));
