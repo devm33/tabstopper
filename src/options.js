@@ -1,5 +1,5 @@
 /*global settings*/
-angular.module('options', ['dropdown', 'notification'])
+angular.module('options', ['notification'])
     .controller('options', options);
 
 function options($scope) {
