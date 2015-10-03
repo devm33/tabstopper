@@ -21,7 +21,8 @@ function notifcationController($timeout, notification) {
     var onShow = () => {
         console.log('show');
         this.show = true;
-        flags.timeout = $timeout(3000)
+        flags.timeout = $timeout(3000);
+        flags.timeout
             .then(setFlag('timeout', false))
             .then(setShow(false))
             .then(() => console.log('show done'));
@@ -29,10 +30,11 @@ function notifcationController($timeout, notification) {
     var onReshow = () => {
         if(!flags.secondTimeout) {
             console.log('reshow');
-            console.log('cancel succesful?', $timeout.cancel(flags.timeout));
+            console.log('cancel successful?', $timeout.cancel(flags.timeout));
             this.show = false;
             flags.secondTimeout = true;
-            flags.timeout = $timeout(400)
+            flags.timeout = $timeout(400);
+            flags.timeout
                 .then(() => console.log('done hiding, now show'))
                 .then(setShow(true))
                 .then(() => $timeout(3000))
