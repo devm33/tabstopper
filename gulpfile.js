@@ -12,7 +12,7 @@ var dest = 'extension';
 gulp.task('copy', () => gulp.src([
     'src/manifest.json',
     'src/icon_128.png',
-    'src/**/*.css'], base)
+    'src/**/*.css', '!src/bower/**'], base)
     .pipe(gulp.dest(dest)));
 
 gulp.task('html', () => gulp.src('src/*.html', base)
