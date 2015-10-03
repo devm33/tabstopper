@@ -1,6 +1,7 @@
 {
     "manifest_version": 2,
     "name": "TabStopper",
+    "description": "Stop opening the same pages!",
     "version": "0.2",
     "icons": {
         "128": "icon_128.png"
@@ -9,6 +10,7 @@
         "persistent": false,
         "page": "background.html"
     },
+    "offline_enabled": true,
     "options_ui": {
         "page": "options.html",
         "chrome_style": true
