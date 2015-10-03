@@ -41,8 +41,6 @@ body {
     display: flex;
     justify-content: space-between;
     width: 50%;
-    -webkit-box-align: center;
-    -webkit-padding-end: 1ex;
 }
 
 .rule-list .text-display {
