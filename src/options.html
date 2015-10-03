@@ -20,7 +20,7 @@
             </div>
             <div class="listitem" role="listitem"
                 ng-repeat="(url, match) in rules track by url"
-                ng-click="toggleSelect(url)"
+                ng-click="select($event, url)"
                 ng-class="{selected: selected == url}">
                 <div class="col">
                     <div class="unselected-display text-display" title="{{url}}">
@@ -32,7 +32,7 @@
                     <div class="unselected-display text-display match-display">
                         {{matchCopy[match]}}
                     </div>
-                    <select class="selected-display" ng-model="newRule.match">
+                    <select class="selected-display" ng-model="match">
                         <option ng-repeat="(match, copy) in matchCopy"
                         value="{{match}}">{{copy}}</option>
                     </select>

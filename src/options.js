@@ -2,7 +2,7 @@
 angular.module('options', ['notification'])
     .controller('options', options);
 
-function options($scope, notification) {
+function options($scope, notification, $document) {
     /* Rules table */
     $scope.matchCopy = {
         exact: 'exactly',
@@ -39,13 +39,16 @@ function options($scope, notification) {
         settings.saveRules($scope.rules, onSaveRules);
     };
 
-    $scope.toggleSelect = (url) => {
-        if($scope.selected == url) {
-            $scope.selected = false;
-        } else {
-            $scope.selected = url;
-        }
+    $scope.select = ($event, url) => {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.selected = url;
     };
+
+    $document.on('click', () => {
+        $scope.selected = false;
+        $scope.$apply();
+    });
 
     reloadRules();
 
