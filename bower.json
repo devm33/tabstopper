@@ -15,7 +15,6 @@
   ],
   "devDependencies": {
     "angular": "~1.4.5",
-    "bootstrap": "~3.3.5",
     "lodash": "~3.10.1"
   },
   "private": "true"
