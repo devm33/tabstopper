@@ -4,31 +4,40 @@ angular.module('notification', [])
         scope: {show: '=', msg: '@'},
         templateUrl: 'common/notification/notification.html',
         controller: ($scope, $timeout) => {
-            var timeout;
+            var flags = {timeout: false, secondTimeout: false};
             var showNotification = () => $scope.show = true;
             var hideNotification = () => $scope.show = false;
-            var finishTimeout = () => timeout = false;
+            var setFlagFalse = (flag) => () => flags[flag] = false;
+            var onShow = () => {
+                console.log('show');
+                flags.timeout = $timeout(3000)
+                    .then(setFlagFalse('timeout'))
+                    .then(hideNotification)
+                    .then(() => console.log('show done'));
+            };
+            var onReshow = () => {
+                if(!flags.secondTimeout) {
+                    console.log('reshow');
+                    $timeout.cancel(flags.timeout);
+                    $scope.show = false;
+                    flags.secondTimeout = true;
+                    flags.timeout = $timeout(400)
+                        .then(() => console.log('done hiding, now show'))
+                        .then(showNotification)
+                        .then(() => $timeout(3000))
+                        .then(() => console.log('reshow done'))
+                        .then(hideNotification)
+                        .then(setFlagFalse('secondTimeout'))
+                        .then(setFlagFalse('timeout'));
+                }
+            };
             $scope.$watch('show', (show) => {
-                console.log('watch triggered, show = ', show, 'timeout', timeout);
+                console.log('watch triggered\t show =', show, '\ttimeout =', flags.timeout);
                 if(show) {
-                    // Oh I see the problem is that when we try to set show =
-                    // true temporarily we end up back here with show and
-                    // timeout both truthy
-                    if(timeout) {
-
-                        console.log('timeout exists canceling');
-                        $timeout.cancel(timeout);
-                        $scope.show = false;
-                        timeout = $timeout(400)
-                            .then(() => console.log('done hiding, now show'))
-                            .then(showNotification)
-                            .then(() => $timeout(3000))
-                            .then(() => console.log('done'))
-                            .then(hideNotification)
-                            .then(finishTimeout);
+                    if(flags.timeout) {
+                        onReshow();
                     } else {
-                        console.log('timeout was false, showing then hiding');
-                        timeout = $timeout(3000).then(hideNotification);
+                        onShow();
                     }
                 }
             });
