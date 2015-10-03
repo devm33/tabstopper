@@ -15,38 +15,33 @@ angular.module('notification', [])
     }));
 
 function notifcationController($timeout, notification) {
-    var flags = {timeout: false, secondTimeout: false};
-    var setShow = (value) => () => this.show = value;
-    var setFlag = (flag, value) => () => flags[flag] = value;
+    var setThis = (prop, value) => () => this[prop] = value;
     var onShow = () => {
         console.log('show');
         this.show = true;
-        flags.timeout = $timeout(3000);
-        flags.timeout
-            .then(setFlag('timeout', false))
-            .then(setShow(false))
+        this.timeout = $timeout(3000);
+        this.timeout
+            .then(setThis('timeout', false))
+            .then(setThis('show', false))
             .then(() => console.log('show done'));
     };
     var onReshow = () => {
-        if(!flags.secondTimeout) {
-            console.log('reshow');
-            console.log('cancel successful?', $timeout.cancel(flags.timeout));
-            this.show = false;
-            flags.secondTimeout = true;
-            flags.timeout = $timeout(400);
-            flags.timeout
-                .then(() => console.log('done hiding, now show'))
-                .then(setShow(true))
-                .then(() => $timeout(3000))
-                .then(() => console.log('reshow done'))
-                .then(setShow(false))
-                .then(setFlag('secondTimeout', false))
-                .then(setFlag('timeout', false));
-        }
+        console.log('reshow');
+        console.log('cancel successful?', $timeout.cancel(this.timeout));
+        this.show = false;
+        this.secondTimeout = true;
+        this.timeout = $timeout(400);
+        this.timeout
+            .then(() => console.log('done hiding, now show'))
+            .then(setThis('show', true))
+            .then(() => this.timeout = $timeout(3000))
+            .then(() => console.log('reshow done'))
+            .then(setThis('show', false))
+            .then(setThis('timeout', false));
     };
     notification.on(() => {
-        console.log('notification timeout =', flags.timeout);
-        if(flags.timeout) {
+        console.log('notification timeout =', this.timeout);
+        if(this.timeout) {
             onReshow();
         } else {
             onShow();
