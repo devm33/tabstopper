@@ -52,6 +52,7 @@ body {
 .rule-list input {
     width: 100%;
     padding: 3px;
+    margin-right: 10px;
 }
 
 .rule-list .text-display.match-display {
