@@ -38,13 +38,12 @@ body {
 }
 
 .rule-list .col {
-    width: 50%;
     display: flex;
     -webkit-box-align: center;
     -webkit-padding-end: 1ex;
 }
 
-.rule-list .url-column {
+.rule-list .text-display {
     overflow: hidden;
     text-overflow: ellipsis;
 }
