@@ -49,4 +49,4 @@ gulp.task('zip', ['copy', 'html', 'js'], () => gulp.src(dest + '/**/*')
 
 gulp.task('default', ['copy', 'html', 'js', 'zip']);
 
-gulp.task('clean', () => require('del')(dest));
+gulp.task('clean', () => require('del')([dest, 'extension.zip']));
