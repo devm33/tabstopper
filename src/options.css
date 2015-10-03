@@ -45,6 +45,7 @@ body {
 
 .rule-list .col {
     display: flex;
+    align-items: center;
     justify-content: space-between;
     width: 50%;
 }
