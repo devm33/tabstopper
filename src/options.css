@@ -11,15 +11,12 @@ body {
 }
 
 .rule-list .listitem {
-    align-items: center;
     background-color: rgba(255, 255, 255, 0);
     border-radius: 0;
     border: none;
     box-sizing: border-box;
     cursor: default;
-    display: flex;
     height: 32px;
-    justify-content: space-around;
     line-height: 20px;
     margin: 0;
     padding: 0 3px;
@@ -41,6 +38,14 @@ body {
 .rule-list .listitem:not(.selected) .selected-display,
 .rule-list .listitem.selected .unselected-display {
     display: none;
+}
+
+.rule-list .listitem,
+.rule-list .flexrow {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
 }
 
 .rule-list .col {
