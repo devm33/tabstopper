@@ -22,24 +22,34 @@
                 ng-repeat="rule in rules track by rule.url"
                 ng-click="select($event, rule.url)"
                 ng-class="{selected: selected == rule.url}">
-                <div class="col">
-                    <div class="unselected-display text-display" title="{{rule.url}}">
-                        {{rule.url}}
+                <div class="flexrow unselected-display">
+                    <div class="col">
+                        <div class="text-display" title="{{rule.url}}">
+                            {{rule.url}}
+                        </div>
                     </div>
-                    <input class="selected-display" ng-model="editing.url">
+                    <div class="col">
+                        <div class="text-display match-display">
+                            {{matchCopy[rule.match]}}
+                        </div>
+                        <div class="row-delete-button" tabindex="0"
+                            title="Delete this item"></div>
+                    </div>
                 </div>
-                <div class="col">
-                    <div class="unselected-display text-display match-display">
-                        {{matchCopy[rule.match]}}
+                <div class="flexrow selected-display">
+                    <div class="col">
+                        <input ng-model="editing.url">
                     </div>
-                    <select class="selected-display" ng-model="editing.match">
-                        <option ng-repeat="(match, copy) in matchCopy"
-                        value="{{match}}">{{copy}}</option>
-                    </select>
-                    <button class="selected-display custom-btn"
-                        ng-click="saveEditing($event)">Save</button>
-                    <div class="row-delete-button" tabindex="0"
-                        title="Delete this item"></div>
+                    <div class="col">
+                        <select ng-model="editing.match">
+                            <option ng-repeat="(match, copy) in matchCopy"
+                            value="{{match}}">{{copy}}</option>
+                        </select>
+                        <button class="custom-btn"
+                            ng-click="saveEditing($event)">Save</button>
+                        <div class="row-delete-button" tabindex="0"
+                            title="Delete this item"></div>
+                    </div>
                 </div>
             </div>
             <div class="listitem" role="listitem">
