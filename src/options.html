@@ -19,23 +19,25 @@
                 </div>
             </div>
             <div class="listitem" role="listitem"
-                ng-repeat="(url, match) in rules track by url"
-                ng-click="select($event, url)"
-                ng-class="{selected: selected == url}">
+                ng-repeat="rule in rules track by rule.url"
+                ng-click="select($event, rule.url)"
+                ng-class="{selected: selected == rule.url}">
                 <div class="col">
-                    <div class="unselected-display text-display" title="{{url}}">
-                        {{url}}
+                    <div class="unselected-display text-display" title="{{rule.url}}">
+                        {{rule.url}}
                     </div>
-                    <input class="selected-display" ng-model="url">
+                    <input class="selected-display" ng-model="editing.url">
                 </div>
                 <div class="col">
                     <div class="unselected-display text-display match-display">
-                        {{matchCopy[match]}}
+                        {{matchCopy[rule.match]}}
                     </div>
-                    <select class="selected-display" ng-model="match">
+                    <select class="selected-display" ng-model="editing.match">
                         <option ng-repeat="(match, copy) in matchCopy"
                         value="{{match}}">{{copy}}</option>
                     </select>
+                    <button class="selected-display custom-btn"
+                        ng-click="saveEditing()">Save</button>
                     <div class="row-delete-button" tabindex="0"
                         title="Delete this item"></div>
                 </div>
