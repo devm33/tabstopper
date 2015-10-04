@@ -37,7 +37,7 @@
                         value="{{match}}">{{copy}}</option>
                     </select>
                     <button class="selected-display custom-btn"
-                        ng-click="saveEditing()">Save</button>
+                        ng-click="saveEditing($event)">Save</button>
                     <div class="row-delete-button" tabindex="0"
                         title="Delete this item"></div>
                 </div>
@@ -56,6 +56,14 @@
                         ng-disabled="!newRule.url">Add rule</button>
                 </div>
             </div>
+        </div>
+
+        <div>selected: {{selected}}</div>
+        <div>editing: {{editing|json}}</div>
+        <div>rules:
+            <ul>
+                <li ng-repeat="rule in rules">{{rule|json}}</li>
+            </ul>
         </div>
 
         <h4>Other settings</h4>

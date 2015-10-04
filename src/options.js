@@ -26,7 +26,7 @@ function options($scope, notification, $document) {
 
     reloadRules();
 
-    var onSaveRules = _.flowRight(reloadRules, applyNotify);
+    var onSaveRules = _.flow(reloadRules, applyNotify);
 
     function saveRules() {
         settings.saveRules(_.mapValues($scope.rules, 'match'), onSaveRules);
@@ -49,12 +49,26 @@ function options($scope, notification, $document) {
         settings.saveRules($scope.rules, onSaveRules);
     };
 
-    $scope.select = ($event, url) => {
+    var stopEvents = (fn) => ($event, ...args) => {
         $event.preventDefault();
         $event.stopPropagation();
+        return fn.apply(this, args);
+    };
+
+    $scope.select = stopEvents((url) => {
         $scope.selected = url;
         $scope.editing = {url:url, match:$scope.rules[url].match};
-    };
+    });
+
+    $scope.saveEditing = stopEvents(() => {
+        if($scope.editing.url !== $scope.selected) {
+            delete $scope.rules[$scope.selected];
+        }
+        $scope.rules[$scope.editing.url] = $scope.editing;
+        $scope.selected = false;
+        $scope.editing = {};
+        saveRules();
+    });
 
     $document.on('click', () => {
         console.log('$document clicked');
