@@ -41,7 +41,7 @@ function options($scope, notification, $document) {
 
     $scope.deleteRule = (url) => {
         delete $scope.rules[url];
-        settings.saveRules($scope.rules, onSaveRules);
+        saveRules();
     };
 
     var stopEvents = (fn) => ($event, ...args) => {
