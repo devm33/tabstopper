@@ -4,6 +4,10 @@ body {
     min-width: 600px;
 }
 
+input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
 .list.rule-list {
     border: 1px solid #d9d9d9;
     border-radius: 2px;
