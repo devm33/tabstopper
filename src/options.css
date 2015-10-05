@@ -62,7 +62,8 @@ body {
 }
 
 .rule-list .text-display,
-.rule-list input {
+.rule-list input:not([type]),
+.rule-list input[type="text"] {
     width: 100%;
     padding: 3px;
     margin-right: 10px;
