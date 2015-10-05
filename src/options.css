@@ -31,6 +31,10 @@ input[type="checkbox"] {
     -webkit-user-select: none;
 }
 
+.rule-list .listitem:first-child {
+    border-bottom: 1px solid #d9d9d9;
+}
+
 .rule-list .listitem:not(.disabled):hover {
     background-color: rgb(228, 236, 247);
 }
