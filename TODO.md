@@ -16,6 +16,4 @@
 
 ## Options
 
-- move editing line into a form to allow submit on enter
-
-- ? autofocus edit url on click ?
+- maybe: autofocus edit url on click ?
