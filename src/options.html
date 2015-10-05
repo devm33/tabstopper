@@ -33,6 +33,7 @@
                             {{matchCopy[rule.match]}}
                         </div>
                         <div class="row-delete-button" tabindex="0"
+                            ng-click="deleteRule(rule.url)"
                             title="Delete this item"></div>
                     </div>
                 </div>
@@ -48,6 +49,7 @@
                         <input class="custom-btn" type="submit" value="Save"
                             ng-click="saveEditing($event)"/>
                         <div class="row-delete-button" tabindex="0"
+                            ng-click="deleteRule(rule.url)"
                             title="Delete this item"></div>
                     </div>
                 </form>
