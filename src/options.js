@@ -66,7 +66,6 @@ function options($scope, notification, $document) {
     });
 
     $document.on('click', () => {
-        console.log('$document clicked');
         $scope.selected = false;
         $scope.$apply();
     });
