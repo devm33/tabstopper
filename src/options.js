@@ -34,7 +34,7 @@ function options($scope, notification, $document) {
 
     $scope.addRule = () => {
         if($scope.newRule.url) {
-            $scope.rules[$scope.newRule.url] = $scope.newRule.match;
+            $scope.rules[$scope.newRule.url] = $scope.newRule;
             saveRules();
         }
     };
