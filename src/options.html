@@ -36,7 +36,7 @@
                             title="Delete this item"></div>
                     </div>
                 </div>
-                <div class="flexrow selected-display">
+                <form class="flexrow selected-display">
                     <div class="col">
                         <input ng-model="editing.url">
                     </div>
@@ -45,12 +45,12 @@
                             <option ng-repeat="(match, copy) in matchCopy"
                             value="{{match}}">{{copy}}</option>
                         </select>
-                        <button class="custom-btn"
-                            ng-click="saveEditing($event)">Save</button>
+                        <input class="custom-btn" type="submit" value="Save"
+                            ng-click="saveEditing($event)"/>
                         <div class="row-delete-button" tabindex="0"
                             title="Delete this item"></div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="listitem" role="listitem">
                 <div class="col">
