@@ -54,7 +54,7 @@
                     </div>
                 </form>
             </div>
-            <div class="listitem" role="listitem">
+            <form class="listitem" role="listitem">
                 <div class="col">
                     <input tabindex="-1" ng-model="newRule.url"
                     placeholder="Add a new url part to match">
@@ -64,10 +64,10 @@
                         <option ng-repeat="(match, copy) in matchCopy"
                         value="{{match}}">{{copy}}</option>
                     </select>
-                    <button class="custom-btn" ng-click="addRule()"
-                        ng-disabled="!newRule.url">Add rule</button>
+                    <input class="custom-btn" value="Add rule" type="submit"
+                        ng-click="addRule()" ng-disabled="!newRule.url"/>
                 </div>
-            </div>
+            </form>
         </div>
 
         <h4>Other settings</h4>
