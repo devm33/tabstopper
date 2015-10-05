@@ -39,11 +39,6 @@ function options($scope, notification, $document) {
         }
     };
 
-    $scope.saveRules = () => {
-        saveRules();
-        $scope.selected = false;
-    };
-
     $scope.deleteRule = (url) => {
         delete $scope.rules[url];
         settings.saveRules($scope.rules, onSaveRules);
