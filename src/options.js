@@ -1,5 +1,5 @@
 /*global settings*/
-angular.module('options', ['notification'])
+angular.module('options', ['notification', 'editRule'])
     .controller('options', options);
 
 function options($scope, notification, $document) {
@@ -16,8 +16,12 @@ function options($scope, notification, $document) {
         hash: 'up to the #'
     };
 
-    function reloadRules() {
+    $scope.clearNewRule = () => {
         $scope.newRule = {match: 'hash'};
+    };
+
+    function reloadRules() {
+        $scope.clearNewRule();
         settings.loadRules((rules) => {
             $scope.rules = _.mapValues(rules, (match, url) => ({match: match, url: url}));
             $scope.$apply();

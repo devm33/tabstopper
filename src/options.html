@@ -37,37 +37,15 @@
                             title="Delete this item"></div>
                     </div>
                 </div>
-                <form class="flexrow selected-display">
-                    <div class="col">
-                        <input ng-model="editing.url">
-                    </div>
-                    <div class="col">
-                        <select ng-model="editing.match">
-                            <option ng-repeat="(match, copy) in matchCopy"
-                            value="{{match}}">{{copy}}</option>
-                        </select>
-                        <input class="custom-btn" type="submit" value="Save"
-                            ng-click="saveEditing($event)"/>
-                        <div class="row-delete-button" tabindex="0"
-                            ng-click="deleteRule(rule.url)"
-                            title="Delete this item"></div>
-                    </div>
-                </form>
+                <edit-rule class="flexrow selected-display"
+                    rule="editing" on-delete="deleteRule(rule.url)"
+                    on-save="saveEditing($event, editing)" save="Save"
+                    options="matchCopy" save-enabled="true"></edit-rule>
             </div>
-            <form class="listitem" role="listitem">
-                <div class="col">
-                    <input tabindex="-1" ng-model="newRule.url"
-                    placeholder="Add a new url part to match">
-                </div>
-                <div class="col">
-                    <select ng-model="newRule.match">
-                        <option ng-repeat="(match, copy) in matchCopy"
-                        value="{{match}}">{{copy}}</option>
-                    </select>
-                    <input class="custom-btn" value="Add rule" type="submit"
-                        ng-click="addRule()" ng-disabled="!newRule.url"/>
-                </div>
-            </form>
+            <edit-rule class="listitem" role="listitem"
+                rule="newRule" on-delete="clearNewRule()"
+                on-save="addRule()" save="Add rule" options="matchCopy"
+                save-enabled="newRule.url"></edit-rule>
         </div>
 
         <h4>Other settings</h4>
@@ -82,9 +60,9 @@
         <!-- build:js -->
         <script src="bower/angular/angular.min.js"></script>
         <script src="bower/lodash/lodash.min.js"></script>
-        <script src="bower/jquery/dist/jquery.min.js"></script>
         <script src="common/settings.js"></script>
         <script src="common/notification/notification.js"></script>
+        <script src="common/rules/edit-rule.js"></script>
         <script src="options.js"></script>
         <!-- endbuild -->
     </body>

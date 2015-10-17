@@ -1,0 +1,15 @@
+<form>
+    <div class="col">
+        <input ng-model="rule.url"/>
+    </div>
+    <div class="col">
+        <select ng-model="rule.match">
+            <option ng-repeat="(match, copy) in options"
+            value="{{match}}">{{copy}}</option>
+        </select>
+        <input class="custom-btn" type="submit" value="{{save}}"
+            ng-disabled="!saveEnabled" ng-click="onSave({$event:$event})"/>
+        <div class="row-delete-button" tabindex="0"
+            ng-click="onDelete({$event:$event})" title="Delete this item"></div>
+    </div>
+</form>

@@ -49,6 +49,7 @@ input[type="checkbox"] {
     display: none;
 }
 
+.rule-list edit-rule form,
 .rule-list .listitem,
 .rule-list .flexrow {
     display: flex;
