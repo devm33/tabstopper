@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="bower/bootstrap/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="popup.css">
     </head>
     <body ng-app="popup" ng-controller="popup" class="container">
 
-        <h4>This page is open in {{tabs.length}} tabs</h4>
+        <h1>This page is open in {{tabs.length}} tabs</h1>
 
         <div ng-if="exacts.length">
-            <h5>{{pluralizeMsg(exacts.length)}} exactly matching</h5>
+            <h2>{{pluralizeMsg(exacts.length)}} exactly matching</h2>
             <ul>
                 <li>{{ellipsis(currentTab.title, 30)}} (current: {{currentTab.index}})</li>
                 <li ng-repeat="tab in exacts track by tab.id">
@@ -21,8 +20,8 @@
         </div>
 
         <div ng-if="matchesExceptHash.length">
-            <h5>{{pluralizeMsg(matchesExceptHash.length)}} matching the current
-                url except for the #hash value</h5>
+            <h2>{{pluralizeMsg(matchesExceptHash.length)}} matching the current
+                url except for the #hash value</h2>
             <ul>
                 <li>
                     {{ellipsis(afterDelim(currentTab.url, '#', 'hash'), 15)}}
@@ -38,8 +37,8 @@
         </div>
 
         <div ng-if="matchesOnlyBase.length">
-            <h5>{{pluralizeMsg(matchesOnlyBase.length)}} matching up to the ?
-            </h5>
+            <h2>{{pluralizeMsg(matchesOnlyBase.length)}} matching up to the ?
+            </h2>
             <ul>
                 <li>
                     {{ellipsis(afterDelim(currentTab.url, '?'), 15)}}
@@ -67,6 +66,7 @@
             <p ng-if="!savedRule">Add a rule to close tabs that match</p>
             <p ng-if="savedRule">Update the current rule to close tabs that match</p>
 
+            <edit-rule rule="rule" ></edit-rule>
             <div class="radio">
                 <label>
                     <input type="radio" ng-model="rule.match" value="hash"/>
